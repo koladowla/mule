@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sockets="http://www.mulesoft.org/schema/mule/sockets" xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:google-drive="http://www.mulesoft.org/schema/mule/google-drive" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/google-drive http://www.mulesoft.org/schema/mule/google-drive/current/mule-google-drive.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
+http://www.mulesoft.org/schema/mule/sockets http://www.mulesoft.org/schema/mule/sockets/current/mule-sockets.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="2fd0d5b6-d0ff-46c1-a6b0-24161a346cb0" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="47362cdb-aa7f-4caa-930d-be68d69a25a4" >
+		<email:smtp-connection host="smtp.gmail.com" port="465" user="koladowla705@gmail.com" password="kuyb vmts ohpp hizq">
+			<email:properties >
+				<email:property key="mail.smtp.ssl.enable" value="true" />
+			</email:properties>
+		</email:smtp-connection>
+	</email:smtp-config>
+	<flow name="job_mailFlow" doc:id="e45a9fbb-bd5f-422d-8e7a-0774b5fb04ef" >
+		<http:listener doc:name="Listener" doc:id="477138f8-85ae-48cd-a9cd-282bebd68744" config-ref="HTTP_Listener_config" path="/job"/>
+		<logger level="INFO" doc:name="Logger" doc:id="1d090a7b-7eac-4d75-a3e1-f94184b5235f" message='"start log"'/>
+		<http:request doc:name="Request" doc:id="b1b3ee4a-0ab9-49d3-9106-1666368c0f6a" url="https://api.github.com/repos/DowlaTitan/job/contents/Dowla%20Mulesoft%20Resume.pdf" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Accept" : "application/vnd.github.v3.raw"
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"t" : now() 
+}]]]></http:query-params>
+		</http:request>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="757e39f9-2b60-42d6-8622-be084737867c" variableName="Resume" />
+		<http:request doc:name="Request" doc:id="6743440a-a1f3-4c5b-a82a-302b4e0782b7" url="https://api.github.com/repos/DowlaTitan/job/contents/email_Id" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Accept" : "application/vnd.github.v3.raw"
+}]]]></http:headers>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="4d97f4b3-8bf0-414b-b705-cc82e1c19f9b">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+(payload splitBy "," map trim($)) map { email: $ }
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="907bcd19-a132-4d60-985b-73212154114b" variableName="Email_ID"/>
+		<choice doc:name="Choice" doc:id="fc8e37b4-eeb1-402f-ad21-51ffa658f678" >
+			<when expression='#[sizeOf((vars.Email_ID[0].email default "") as String) &gt; 16]'>
+				<until-successful maxRetries="5" doc:name="Until Successful" doc:id="c4376a9e-96e6-4945-b52a-8399243c9cf9" millisBetweenRetries="20000">
+					<foreach doc:name="For Each" doc:id="c811c2f1-8203-461c-92ea-4c10f05cf0a5" collection="#[vars.Email_ID]">
+			<logger level="INFO" doc:name="Logger" doc:id="b30caca0-51eb-4acb-92b2-f16d7719ceab" message="#[payload.email]" />
+			<email:send doc:name="Send" doc:id="584923b6-8753-4898-bf50-dd879023436b" config-ref="Email_SMTP" fromAddress="koladowla705@gmail.com" subject="Application for Mulesoft Developer">
+			<email:to-addresses>
+				<email:to-address value="#[payload.email]" />
+			</email:to-addresses>
+			<email:body>
+				<email:content><![CDATA[First Name: Dowla
+Last Name: Kola
+Date of Birth: 15/08/2001
+Contact Number: 9901135654
+Total Experience: 3.9 years
+Relevant Experience: 3.9 years
+Current CTC: 8LPA
+Expected CTC: 13LPA
+Current Location: Bangalore
+Preferred Location: Bangalore, Hyderabad 
+Current Organization: YOULOGIX INFOTECH PRIVATE LIMITED
+Notice period: Immediate Joiner.]]></email:content>
+			</email:body>
+			<email:attachments><![CDATA[#[%dw 2.0
+output application/java
+---
+{
+    "Dowla Mulesoft Resume.pdf": vars.Resume
+}]]]></email:attachments>
+		</email:send>
+		</foreach>
+				</until-successful>
+			</when>
+			<otherwise>
+				<ee:transform doc:name="Transform Message" doc:id="39db3889-22e3-420b-a4f6-4ff418ffd286" >
+					<ee:message >
+						<ee:set-payload ><![CDATA["There are no EmailId's"]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<email:send doc:name="Send" doc:id="0208b050-398d-4d20-9307-0d5ab21bee94" config-ref="Email_SMTP" fromAddress="koladowla705@gmail.com" subject='"No Emails"'>
+					<email:to-addresses >
+						<email:to-address value="koladowla705@gmail.com" />
+					</email:to-addresses>
+					<email:body>
+						<email:content><![CDATA[#[payload]]]></email:content>
+					</email:body>
+				</email:send>
+			</otherwise>
+		</choice>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="3507e35c-f2d2-49ff-a9df-aa7c9a6ffd92" type="ANY">
+				<email:send doc:name="Send" doc:id="616081e9-19ec-41eb-8ba8-b9112f682c9f" config-ref="Email_SMTP" fromAddress="koladowla705@gmail.com" subject='"error in the flow"'>
+					<email:to-addresses >
+						<email:to-address value="koladowla705@gmail.com" />
+					</email:to-addresses>
+					<email:body>
+						<email:content><![CDATA[#[payload]]]></email:content>
+					</email:body>
+				</email:send>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>
