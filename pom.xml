@@ -11,7 +11,7 @@
     <packaging>mule-application</packaging>
     <name>job_mail</name>
 
-    <description>MuleSoft Job Mail Application</description>
+    <description>MuleSoft Job Mail Application (CloudHub 2.0)</description>
 
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
@@ -20,6 +20,8 @@
         <munit.maven.plugin.version>3.6.1</munit.maven.plugin.version>
         <java.version>17</java.version>
         <encoding>UTF-8</encoding>
+
+        <!-- SonarQube Configuration -->
         <sonar.projectKey>Dowla_job_mail</sonar.projectKey>
         <sonar.projectName>job_mail</sonar.projectName>
         <sonar.language>java</sonar.language>
@@ -28,11 +30,14 @@
 
     <build>
         <plugins>
+            <!-- Clean Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
+
+            <!-- Mule Maven Plugin for CloudHub 2.0 -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -40,18 +45,25 @@
                 <extensions>true</extensions>
                 <configuration>
                     <classifier>mule-application</classifier>
-                    <deploymentType>cloudhub</deploymentType>
-                    <cloudHubDeployment>
-                        <username>${anypoint.username}</username>
-                        <password>${anypoint.password}</password>
+                    <deploymentType>cloudhub2</deploymentType>
+                    <cloudHub2Deployment>
+                        <organizationId>${anypoint.orgId}</organizationId>
                         <environment>Sandbox</environment>
+                        <target>${anypoint.target}</target>
                         <applicationName>job-mail-app</applicationName>
-                        <workers>1</workers>
-                        <workerType>Micro</workerType>
                         <region>us-east-1</region>
-                    </cloudHubDeployment>
+                        <runtimeVersion>${mule.runtime}</runtimeVersion>
+                        <replicas>1</replicas>
+                        <cpu>0.1</cpu>
+                        <memory>0.5</memory>
+                        <usePersistentQueues>false</usePersistentQueues>
+                        <anypointUsername>${anypoint.username}</anypointUsername>
+                        <anypointPassword>${anypoint.password}</anypointPassword>
+                    </cloudHub2Deployment>
                 </configuration>
             </plugin>
+
+            <!-- MUnit Plugin -->
             <plugin>
                 <groupId>com.mulesoft.munit.tools</groupId>
                 <artifactId>munit-maven-plugin</artifactId>
@@ -75,6 +87,8 @@
                     </coverage>
                 </configuration>
             </plugin>
+
+            <!-- SonarQube Plugin -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
@@ -128,6 +142,7 @@
             <version>1.27.1</version>
         </dependency>
     </dependencies>
+
     <repositories>
         <repository>
             <id>anypoint-exchange-v3</id>
