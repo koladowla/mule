@@ -42,8 +42,8 @@
                     <classifier>mule-application</classifier>
                     <deploymentType>cloudhub</deploymentType>
                     <cloudHubDeployment>
-                        <username>TitanDowla</username>
-                        <password>Dowla@123</password>
+                        <username>${anypoint.username}</username>
+                        <password>${anypoint.password}</password>
                         <environment>Sandbox</environment>
                         <applicationName>job-mail-app</applicationName>
                         <workers>1</workers>
