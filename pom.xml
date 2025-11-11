@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>  <!-- Your Anypoint Org UUID -->
+    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>  <!-- Your Org UUID -->
     <artifactId>job_mail</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>mule-application</packaging>
@@ -11,7 +11,7 @@
     <description>MuleSoft Job Mail Application (CloudHub 2.0)</description>
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
-        <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
+        <mule.maven.plugin.version>3.7.1</mule.maven.plugin.version>
         <munit.version>3.6.1</munit.version>
         <munit.maven.plugin.version>3.6.1</munit.maven.plugin.version>
         <java.version>17</java.version>
@@ -25,8 +25,8 @@
         <sonar.language>java</sonar.language>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <!-- CH2 -->
-        <environment>dev</environment>  <!-- Your env name -->
-        <targetName>default</targetName>  <!-- Your target name -->
+        <environment>dev</environment>  <!-- Your env -->
+        <targetName>default</targetName>  <!-- Your target -->
         <appName>job_mail</appName>
         <publicURL>auto</publicURL>
     </properties>
@@ -67,8 +67,7 @@
                         <environment>${environment}</environment>
                         <target>${targetName}</target>
                         <muleVersion>${mule.runtime}</muleVersion>
-                        <username>${anypoint.username}</username>
-                        <password>${anypoint.password}</password>
+                        <server>my.anypoint.credentials</server>  <!-- References settings.xml -->
                         <applicationName>${appName}</applicationName>
                         <replicas>1</replicas>
                         <vCores>0.1</vCores>
