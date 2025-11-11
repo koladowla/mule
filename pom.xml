@@ -2,32 +2,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>
     <artifactId>job_mail</artifactId>
     <version>1.0.0</version>
     <packaging>mule-application</packaging>
     <name>job_mail</name>
-
     <description>MuleSoft Job Mail Application (CloudHub 2.0)</description>
-
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
-        <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
+        <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
         <munit.version>3.6.1</munit.version>
         <munit.maven.plugin.version>3.6.1</munit.maven.plugin.version>
         <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <encoding>UTF-8</encoding>
-
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- SonarQube Configuration -->
         <sonar.projectKey>Dowla_job_mail</sonar.projectKey>
         <sonar.projectName>job_mail</sonar.projectName>
         <sonar.language>java</sonar.language>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+        <!-- CH2 Placeholders (passed via -D in pipeline) -->
+        <anypoint.target>default</anypoint.target>  <!-- Replace with your actual target name from Runtime Manager -->
     </properties>
-
+    <distributionManagement>  <!-- NEW: Required for Exchange publishing in CH2 -->
+        <repository>
+            <id>anypoint-exchange</id>
+            <name>Anypoint Exchange</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
     <build>
         <plugins>
             <!-- Clean Plugin -->
@@ -36,7 +43,17 @@
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
-
+            <!-- Compiler Plugin for Java 17 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${encoding}</encoding>
+                </configuration>
+            </plugin>
             <!-- Mule Maven Plugin for CloudHub 2.0 -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
@@ -47,22 +64,32 @@
                     <classifier>mule-application</classifier>
                     <deploymentType>cloudhub2</deploymentType>
                     <cloudHub2Deployment>
-                        <organizationId>NA</organizationId>
-                        <environment>Sandbox</environment>
-                        <target>${anypoint.target}</target>
-                        <applicationName>job-mail-app</applicationName>
+                        <uri>https://anypoint.mulesoft.com</uri>  <!-- NEW: Required -->
+                        <provider>MC</provider>  <!-- NEW: Mule Cloud provider -->
+                        <organizationId>${project.groupId}</organizationId>  <!-- Uses your groupId as Org ID -->
+                        <environment>${env}</environment>  <!-- Matches pipeline -Denv=dev -->
+                        <target>${anypoint.target}</target>  <!-- e.g., 'default' or your target name -->
+                        <applicationName>${application.name}</applicationName>  <!-- Matches pipeline -Dapplication.name=job-mail -->
                         <region>us-east-1</region>
                         <runtimeVersion>${mule.runtime}</runtimeVersion>
                         <replicas>1</replicas>
-                        <cpu>0.1</cpu>
-                        <memory>0.5</memory>
+                        <cpu>0.1</cpu>  <!-- Renamed from workerSize for CH2 -->
+                        <memory>0.5</memory>  <!-- NEW: In GB for CH2 -->
                         <usePersistentQueues>false</usePersistentQueues>
+                        <!-- Auth: Use pipeline -D params; remove if using Connected App -->
                         <anypointUsername>${anypoint.username}</anypointUsername>
                         <anypointPassword>${anypoint.password}</anypointPassword>
+                        <!-- Optional: Deployment settings -->
+                        <deploymentSettings>
+                            <http>
+                                <inbound>
+                                    <publicUrl>auto</publicUrl>  <!-- Generates default URL -->
+                                </inbound>
+                            </http>
+                        </deploymentSettings>
                     </cloudHub2Deployment>
                 </configuration>
             </plugin>
-
             <!-- MUnit Plugin -->
             <plugin>
                 <groupId>com.mulesoft.munit.tools</groupId>
@@ -87,7 +114,6 @@
                     </coverage>
                 </configuration>
             </plugin>
-
             <!-- SonarQube Plugin -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
@@ -96,7 +122,6 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
         <dependency>
             <groupId>org.mule.connectors</groupId>
@@ -142,7 +167,6 @@
             <version>1.27.1</version>
         </dependency>
     </dependencies>
-
     <repositories>
         <repository>
             <id>anypoint-exchange-v3</id>
@@ -155,7 +179,6 @@
             <url>https://repository.mulesoft.org/releases/</url>
         </repository>
     </repositories>
-
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
@@ -165,5 +188,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
