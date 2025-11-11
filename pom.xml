@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>  <!-- Replace with your Anypoint Org UUID -->
+    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>  <!-- Your Anypoint Org UUID -->
     <artifactId>job_mail</artifactId>
-    <version>1.0.0-SNAPSHOT</version>  <!-- SNAPSHOT for dev redeploys -->
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>mule-application</packaging>
     <name>job_mail</name>
     <description>MuleSoft Job Mail Application (CloudHub 2.0)</description>
@@ -24,13 +24,12 @@
         <sonar.projectName>job_mail</sonar.projectName>
         <sonar.language>java</sonar.language>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <!-- CH2 Dynamic (overridden by pipeline -D) -->
-        <environment>dev</environment>  <!-- Your env (e.g., dev, Sandbox) -->
-        <targetName>default</targetName>  <!-- Exact target from Runtime Manager -->
+        <!-- CH2 -->
+        <environment>dev</environment>  <!-- Your env name -->
+        <targetName>default</targetName>  <!-- Your target name -->
         <appName>job_mail</appName>
         <publicURL>auto</publicURL>
     </properties>
-    <!-- Exchange Publishing (Required for CH2) -->
     <distributionManagement>
         <repository>
             <id>anypoint-exchange</id>
@@ -41,13 +40,11 @@
     </distributionManagement>
     <build>
         <plugins>
-            <!-- Clean -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
-            <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -58,7 +55,6 @@
                     <encoding>${encoding}</encoding>
                 </configuration>
             </plugin>
-            <!-- Mule Maven Plugin -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -86,7 +82,6 @@
                     </cloudhub2Deployment>
                 </configuration>
             </plugin>
-            <!-- MUnit -->
             <plugin>
                 <groupId>com.mulesoft.munit.tools</groupId>
                 <artifactId>munit-maven-plugin</artifactId>
@@ -110,7 +105,6 @@
                     </coverage>
                 </configuration>
             </plugin>
-            <!-- SonarQube -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
