@@ -11,7 +11,7 @@
     <description>MuleSoft Job Mail Application (CloudHub 2.0)</description>
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
-        <mule.maven.plugin.version>3.7.1</mule.maven.plugin.version>
+        <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>  <!-- Updated for Maven 3.9+ -->
         <munit.version>3.6.1</munit.version>
         <munit.maven.plugin.version>3.6.1</munit.maven.plugin.version>
         <java.version>17</java.version>
@@ -67,7 +67,8 @@
                         <environment>${environment}</environment>
                         <target>${targetName}</target>
                         <muleVersion>${mule.runtime}</muleVersion>
-                        <server>my.anypoint.credentials</server>  <!-- References settings.xml -->
+                        <username>${anypoint.username}</username>
+                        <password>${anypoint.password}</password>
                         <applicationName>${appName}</applicationName>
                         <replicas>1</replicas>
                         <vCores>0.1</vCores>
