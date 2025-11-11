@@ -19,15 +19,16 @@
         <maven.compiler.target>17</maven.compiler.target>
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- SonarQube Configuration -->
+        <!-- SonarQube -->
         <sonar.projectKey>Dowla_job_mail</sonar.projectKey>
         <sonar.projectName>job_mail</sonar.projectName>
         <sonar.language>java</sonar.language>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <!-- CH2 Placeholders (passed via -D in pipeline) -->
-        <anypoint.target>default</anypoint.target>  <!-- Replace with your actual target name from Runtime Manager -->
+        <!-- CH2 Dynamic Params (from pipeline -D) -->
+        <anypoint.target>default</anypoint.target>  <!-- Your actual target name -->
     </properties>
-    <distributionManagement>  <!-- NEW: Required for Exchange publishing in CH2 -->
+    <!-- NEW: Distribution Management for Exchange Publishing -->
+    <distributionManagement>
         <repository>
             <id>anypoint-exchange</id>
             <name>Anypoint Exchange</name>
@@ -43,7 +44,7 @@
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
-            <!-- Compiler Plugin for Java 17 -->
+            <!-- Compiler for Java 17 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -54,7 +55,7 @@
                     <encoding>${encoding}</encoding>
                 </configuration>
             </plugin>
-            <!-- Mule Maven Plugin for CloudHub 2.0 -->
+            <!-- Mule Maven Plugin for CH2 -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -62,35 +63,35 @@
                 <extensions>true</extensions>
                 <configuration>
                     <classifier>mule-application</classifier>
-                    <deploymentType>cloudhub2</deploymentType>
+                    <!-- REMOVED: <deploymentType>cloudhub2</deploymentType> (causes warnings) -->
                     <cloudHub2Deployment>
-                        <uri>https://anypoint.mulesoft.com</uri>  <!-- NEW: Required -->
-                        <provider>MC</provider>  <!-- NEW: Mule Cloud provider -->
-                        <organizationId>${project.groupId}</organizationId>  <!-- Uses your groupId as Org ID -->
-                        <environment>${env}</environment>  <!-- Matches pipeline -Denv=dev -->
-                        <target>${anypoint.target}</target>  <!-- e.g., 'default' or your target name -->
-                        <applicationName>${application.name}</applicationName>  <!-- Matches pipeline -Dapplication.name=job-mail -->
+                        <uri>https://anypoint.mulesoft.com</uri>
+                        <provider>MC</provider>  <!-- Mule Cloud -->
+                        <organizationId>${project.groupId}</organizationId>  <!-- Your Org UUID -->
+                        <environment>${env}</environment>  <!-- From -Denv=dev -->
+                        <target>${anypoint.target}</target>
+                        <applicationName>${application.name}</applicationName>  <!-- From -Dapplication.name=job_mail -->
                         <region>us-east-1</region>
                         <runtimeVersion>${mule.runtime}</runtimeVersion>
                         <replicas>1</replicas>
-                        <cpu>0.1</cpu>  <!-- Renamed from workerSize for CH2 -->
-                        <memory>0.5</memory>  <!-- NEW: In GB for CH2 -->
+                        <vCores>0.1</vCores>  <!-- CH2 uses vCores (not cpu) -->
+                        <memory>0.5</memory>  <!-- In GB -->
                         <usePersistentQueues>false</usePersistentQueues>
-                        <!-- Auth: Use pipeline -D params; remove if using Connected App -->
+                        <!-- Auth: Overridden by pipeline -D; switch to Connected App for prod -->
                         <anypointUsername>${anypoint.username}</anypointUsername>
                         <anypointPassword>${anypoint.password}</anypointPassword>
-                        <!-- Optional: Deployment settings -->
+                        <!-- Optional HTTP Settings -->
                         <deploymentSettings>
                             <http>
                                 <inbound>
-                                    <publicUrl>auto</publicUrl>  <!-- Generates default URL -->
+                                    <publicUrl>auto</publicUrl>  <!-- Auto-generates URL -->
                                 </inbound>
                             </http>
                         </deploymentSettings>
                     </cloudHub2Deployment>
                 </configuration>
             </plugin>
-            <!-- MUnit Plugin -->
+            <!-- MUnit -->
             <plugin>
                 <groupId>com.mulesoft.munit.tools</groupId>
                 <artifactId>munit-maven-plugin</artifactId>
@@ -114,7 +115,7 @@
                     </coverage>
                 </configuration>
             </plugin>
-            <!-- SonarQube Plugin -->
+            <!-- SonarQube -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
