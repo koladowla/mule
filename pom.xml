@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>  <!-- Your Org UUID here -->
+    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>  <!-- Replace with your Anypoint Org UUID -->
     <artifactId>job_mail</artifactId>
     <version>1.0.0-SNAPSHOT</version>  <!-- SNAPSHOT for dev redeploys -->
     <packaging>mule-application</packaging>
@@ -24,11 +24,11 @@
         <sonar.projectName>job_mail</sonar.projectName>
         <sonar.language>java</sonar.language>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <!-- CH2 Dynamic (from pipeline -D) -->
-        <environment>dev</environment>  <!-- Your env name (e.g., dev, Sandbox) -->
-        <targetName>default</targetName>  <!-- Exact target from Runtime Manager > Environments > dev > Targets -->
+        <!-- CH2 Dynamic (overridden by pipeline -D) -->
+        <environment>dev</environment>  <!-- Your env (e.g., dev, Sandbox) -->
+        <targetName>default</targetName>  <!-- Exact target from Runtime Manager -->
         <appName>job_mail</appName>
-        <publicURL>auto</publicURL>  <!-- Auto-generate URL; or custom -->
+        <publicURL>auto</publicURL>
     </properties>
     <!-- Exchange Publishing (Required for CH2) -->
     <distributionManagement>
@@ -71,7 +71,7 @@
                         <environment>${environment}</environment>
                         <target>${targetName}</target>
                         <muleVersion>${mule.runtime}</muleVersion>
-                        <username>${anypoint.username}</username>  <!-- From pipeline -D -->
+                        <username>${anypoint.username}</username>
                         <password>${anypoint.password}</password>
                         <applicationName>${appName}</applicationName>
                         <replicas>1</replicas>
@@ -119,7 +119,6 @@
         </plugins>
     </build>
     <dependencies>
-        <!-- Your existing deps unchanged -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
