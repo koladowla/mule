@@ -47,7 +47,7 @@
                     <classifier>mule-application</classifier>
                     <deploymentType>cloudhub2</deploymentType>
                     <cloudHub2Deployment>
-                        <organizationId>${anypoint.orgId}</organizationId>
+                        <organizationId>NA</organizationId>
                         <environment>Sandbox</environment>
                         <target>${anypoint.target}</target>
                         <applicationName>job-mail-app</applicationName>
