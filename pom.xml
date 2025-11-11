@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>
+    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>  <!-- Your Org UUID here -->
     <artifactId>job_mail</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>  <!-- SNAPSHOT for dev redeploys -->
     <packaging>mule-application</packaging>
     <name>job_mail</name>
     <description>MuleSoft Job Mail Application (CloudHub 2.0)</description>
@@ -24,10 +24,13 @@
         <sonar.projectName>job_mail</sonar.projectName>
         <sonar.language>java</sonar.language>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <!-- CH2 Dynamic Params (from pipeline -D) -->
-        <anypoint.target>default</anypoint.target>  <!-- Your actual target name -->
+        <!-- CH2 Dynamic (from pipeline -D) -->
+        <environment>dev</environment>  <!-- Your env name (e.g., dev, Sandbox) -->
+        <targetName>default</targetName>  <!-- Exact target from Runtime Manager > Environments > dev > Targets -->
+        <appName>job_mail</appName>
+        <publicURL>auto</publicURL>  <!-- Auto-generate URL; or custom -->
     </properties>
-    <!-- NEW: Distribution Management for Exchange Publishing -->
+    <!-- Exchange Publishing (Required for CH2) -->
     <distributionManagement>
         <repository>
             <id>anypoint-exchange</id>
@@ -38,13 +41,13 @@
     </distributionManagement>
     <build>
         <plugins>
-            <!-- Clean Plugin -->
+            <!-- Clean -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
-            <!-- Compiler for Java 17 -->
+            <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -55,40 +58,32 @@
                     <encoding>${encoding}</encoding>
                 </configuration>
             </plugin>
-            <!-- Mule Maven Plugin for CH2 -->
+            <!-- Mule Maven Plugin -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <classifier>mule-application</classifier>
-                    <!-- REMOVED: <deploymentType>cloudhub2</deploymentType> (causes warnings) -->
-                    <cloudHub2Deployment>
+                    <cloudhub2Deployment>
                         <uri>https://anypoint.mulesoft.com</uri>
-                        <provider>MC</provider>  <!-- Mule Cloud -->
-                        <organizationId>${project.groupId}</organizationId>  <!-- Your Org UUID -->
-                        <environment>${env}</environment>  <!-- From -Denv=dev -->
-                        <target>${anypoint.target}</target>
-                        <applicationName>${application.name}</applicationName>  <!-- From -Dapplication.name=job_mail -->
-                        <region>us-east-1</region>
-                        <runtimeVersion>${mule.runtime}</runtimeVersion>
+                        <provider>MC</provider>
+                        <environment>${environment}</environment>
+                        <target>${targetName}</target>
+                        <muleVersion>${mule.runtime}</muleVersion>
+                        <username>${anypoint.username}</username>  <!-- From pipeline -D -->
+                        <password>${anypoint.password}</password>
+                        <applicationName>${appName}</applicationName>
                         <replicas>1</replicas>
-                        <vCores>0.1</vCores>  <!-- CH2 uses vCores (not cpu) -->
-                        <memory>0.5</memory>  <!-- In GB -->
-                        <usePersistentQueues>false</usePersistentQueues>
-                        <!-- Auth: Overridden by pipeline -D; switch to Connected App for prod -->
-                        <anypointUsername>${anypoint.username}</anypointUsername>
-                        <anypointPassword>${anypoint.password}</anypointPassword>
-                        <!-- Optional HTTP Settings -->
+                        <vCores>0.1</vCores>
                         <deploymentSettings>
                             <http>
                                 <inbound>
-                                    <publicUrl>auto</publicUrl>  <!-- Auto-generates URL -->
+                                    <publicUrl>${publicURL}</publicUrl>
                                 </inbound>
                             </http>
                         </deploymentSettings>
-                    </cloudHub2Deployment>
+                    </cloudhub2Deployment>
                 </configuration>
             </plugin>
             <!-- MUnit -->
@@ -124,6 +119,7 @@
         </plugins>
     </build>
     <dependencies>
+        <!-- Your existing deps unchanged -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
