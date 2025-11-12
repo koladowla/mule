@@ -11,21 +11,17 @@
     <version>1.0.0</version>
     <packaging>mule-application</packaging>
     <name>job_mail</name>
-    <description>MuleSoft Job Mail Application</description>
 
-    <!-- ======================= PROPERTIES ======================= -->
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
         <java.version>17</java.version>
-        <encoding>UTF-8</encoding>
 
-        <!-- Jenkins credentials (Anypoint Username & Password) -->
-        <anypoint.username>${anypoint.username}</anypoint.username>
-        <anypoint.password>${anypoint.password}</anypoint.password>
+        <!-- Connected App Credentials -->
+        <anypoint.clientId>${anypoint.clientId}</anypoint.clientId>
+        <anypoint.clientSecret>${anypoint.clientSecret}</anypoint.clientSecret>
     </properties>
 
-    <!-- ======================= PROFILES ======================= -->
     <profiles>
         <profile>
             <id>dev</id>
@@ -37,24 +33,10 @@
                 <cloudhub.workerType>Micro</cloudhub.workerType>
             </properties>
         </profile>
-
-        <profile>
-            <id>prod</id>
-            <properties>
-                <cloudhub.environment>Production</cloudhub.environment>
-                <cloudhub.applicationName>job-mail-app</cloudhub.applicationName>
-                <cloudhub.region>us-east-1</cloudhub.region>
-                <cloudhub.workers>2</cloudhub.workers>
-                <cloudhub.workerType>Small</cloudhub.workerType>
-            </properties>
-        </profile>
     </profiles>
 
-    <!-- ======================= BUILD ======================= -->
     <build>
         <plugins>
-
-            <!-- ===== Mule Maven Plugin ===== -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -64,39 +46,22 @@
                     <classifier>mule-application</classifier>
                     <cloudHubDeployment>
                         <muleVersion>${mule.runtime}</muleVersion>
-                        <username>${anypoint.username}</username>
-                        <password>${anypoint.password}</password>
+                        <clientId>${anypoint.clientId}</clientId>
+                        <clientSecret>${anypoint.clientSecret}</clientSecret>
                         <environment>${cloudhub.environment}</environment>
                         <applicationName>${cloudhub.applicationName}</applicationName>
                         <workers>${cloudhub.workers}</workers>
                         <workerType>${cloudhub.workerType}</workerType>
                         <region>${cloudhub.region}</region>
-                        <objectStoreV2>true</objectStoreV2>
                         <properties>
                             <http.port>8081</http.port>
                         </properties>
                     </cloudHubDeployment>
                 </configuration>
             </plugin>
-
-            <!-- ===== SonarQube Plugin ===== -->
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>4.0.0.4121</version>
-            </plugin>
-
-            <!-- ===== Clean Plugin ===== -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.3.2</version>
-            </plugin>
-
         </plugins>
     </build>
 
-    <!-- ======================= DEPENDENCIES ======================= -->
     <dependencies>
         <dependency>
             <groupId>org.mule.connectors</groupId>
@@ -104,44 +69,12 @@
             <version>1.11.0</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-email-connector</artifactId>
-            <version>1.7.7</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-file-connector</artifactId>
-            <version>1.5.5</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-sockets-connector</artifactId>
-            <version>1.2.7</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>1.27.1</version>
-        </dependency>
     </dependencies>
 
-    <!-- ======================= REPOSITORIES ======================= -->
     <repositories>
         <repository>
             <id>mulesoft-releases</id>
             <url>https://repository.mulesoft.org/releases/</url>
-        </repository>
-        <repository>
-            <id>mulesoft-snapshots</id>
-            <url>https://repository.mulesoft.org/snapshots/</url>
-        </repository>
-        <repository>
-            <id>anypoint-exchange-v3</id>
-            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
         </repository>
     </repositories>
 
