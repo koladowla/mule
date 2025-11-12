@@ -16,8 +16,8 @@
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
-        <munit.version>2.10</munit.version>
-        <munit.maven.plugin.version>2.10</munit.maven.plugin.version>
+        <munit.version>2.9.0</munit.version>
+        <munit.maven.plugin.version>2.9.0</munit.maven.plugin.version>
         <java.version>17</java.version>
         <encoding>UTF-8</encoding>
 
@@ -181,15 +181,18 @@
             <name>MuleSoft Releases Repository</name>
             <url>https://repository.mulesoft.org/releases/</url>
         </repository>
+        <repository>
+            <id>mulesoft-snapshots</id>
+            <name>MuleSoft Snapshots</name>
+            <url>https://repository.mulesoft.org/snapshots/</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
             <url>https://repository.mulesoft.org/releases/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
 </project>
