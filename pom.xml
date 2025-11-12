@@ -16,10 +16,6 @@
         <mule.runtime>4.10.0</mule.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
         <java.version>17</java.version>
-
-        <!-- Connected App Credentials -->
-        <anypoint.clientId>${anypoint.clientId}</anypoint.clientId>
-        <anypoint.clientSecret>${anypoint.clientSecret}</anypoint.clientSecret>
     </properties>
 
     <profiles>
@@ -46,8 +42,9 @@
                     <classifier>mule-application</classifier>
                     <cloudHubDeployment>
                         <muleVersion>${mule.runtime}</muleVersion>
-                        <clientId>${anypoint.clientId}</clientId>
-                        <clientSecret>${anypoint.clientSecret}</clientSecret>
+                        <!-- Credentials injected by Jenkins via -Ddeployment.clientId and -Ddeployment.clientSecret -->
+                        <clientId>${deployment.clientId}</clientId>
+                        <clientSecret>${deployment.clientSecret}</clientSecret>
                         <environment>${cloudhub.environment}</environment>
                         <applicationName>${cloudhub.applicationName}</applicationName>
                         <workers>${cloudhub.workers}</workers>
