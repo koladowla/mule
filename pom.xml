@@ -16,8 +16,6 @@
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
-        <munit.version>3.6.1</munit.version>
-        <munit.maven.plugin.version>3.6.1</munit.maven.plugin.version>
         <java.version>17</java.version>
         <encoding>UTF-8</encoding>
         <sonar.projectKey>Dowla_job_mail</sonar.projectKey>
@@ -41,36 +39,26 @@
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-                <configuration>
-                    <classifier>mule-application</classifier>
-                    <deploymentType>cloudhub</deploymentType>
-                    <!-- Credentials will be injected via Jenkins, so nothing hardcoded here -->
-                </configuration>
-            </plugin>
-
-            <!-- MUnit plugin -->
-            <plugin>
-                <groupId>com.mulesoft.munit.tools</groupId>
-                <artifactId>munit-maven-plugin</artifactId>
-                <version>${munit.maven.plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>munit-tests</id>
-                        <phase>test</phase>
+                        <id>deploy-to-cloudhub</id>
+                        <phase>deploy</phase>
                         <goals>
-                            <goal>test</goal>
-                            <goal>coverage-report</goal>
+                            <goal>deploy</goal>
                         </goals>
+                        <configuration>
+                            <cloudHubDeployment>
+                                <username>${anypoint.username}</username>
+                                <password>${anypoint.password}</password>
+                                <applicationName>job-mail-app</applicationName>
+                                <environment>Sandbox</environment>
+                                <workers>1</workers>
+                                <workerType>Micro</workerType>
+                                <region>us-east-1</region>
+                            </cloudHubDeployment>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <coverage>
-                        <runCoverage>true</runCoverage>
-                        <formats>
-                            <format>html</format>
-                        </formats>
-                    </coverage>
-                </configuration>
             </plugin>
 
             <!-- Sonar Maven plugin -->
@@ -107,22 +95,6 @@
             <artifactId>mule-sockets-connector</artifactId>
             <version>1.2.7</version>
             <classifier>mule-plugin</classifier>
-        </dependency>
-
-        <!-- MUnit dependencies -->
-        <dependency>
-            <groupId>com.mulesoft.munit</groupId>
-            <artifactId>munit-runner</artifactId>
-            <version>${munit.version}</version>
-            <classifier>mule-plugin</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mulesoft.munit</groupId>
-            <artifactId>munit-tools</artifactId>
-            <version>${munit.version}</version>
-            <classifier>mule-plugin</classifier>
-            <scope>test</scope>
         </dependency>
 
         <!-- Commons library -->
