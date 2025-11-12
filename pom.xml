@@ -1,31 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dowla</groupId>
+    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>
     <artifactId>job_mail</artifactId>
     <version>1.0.0</version>
     <packaging>mule-application</packaging>
-
     <name>job_mail</name>
     <description>MuleSoft Job Mail Application</description>
 
+    <!-- ======================= PROPERTIES ======================= -->
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
-        <munit.version>3.6.1</munit.version>
-        <munit.maven.plugin.version>3.6.1</munit.maven.plugin.version>
+        <munit.version>2.10</munit.version>
+        <munit.maven.plugin.version>2.10</munit.maven.plugin.version>
         <java.version>17</java.version>
         <encoding>UTF-8</encoding>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Connected App Credentials -->
+        <anypoint.clientId>${anypoint.clientId}</anypoint.clientId>
+        <anypoint.clientSecret>${anypoint.clientSecret}</anypoint.clientSecret>
     </properties>
 
+    <!-- ======================= PROFILES ======================= -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <cloudhub.environment>Sandbox</cloudhub.environment>
+                <cloudhub.applicationName>job-mail-app-dev</cloudhub.applicationName>
+                <cloudhub.region>us-east-1</cloudhub.region>
+                <cloudhub.workers>1</cloudhub.workers>
+                <cloudhub.workerType>Micro</cloudhub.workerType>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <cloudhub.environment>Production</cloudhub.environment>
+                <cloudhub.applicationName>job-mail-app</cloudhub.applicationName>
+                <cloudhub.region>us-east-1</cloudhub.region>
+                <cloudhub.workers>2</cloudhub.workers>
+                <cloudhub.workerType>Small</cloudhub.workerType>
+            </properties>
+        </profile>
+    </profiles>
+
+    <!-- ======================= BUILD ======================= -->
     <build>
         <plugins>
-            <!-- Mule Maven Plugin for building and deploying to CloudHub -->
+
+            <!-- ===== Mule Maven Plugin ===== -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -35,18 +65,22 @@
                     <classifier>mule-application</classifier>
                     <deploymentType>cloudhub</deploymentType>
                     <cloudHubDeployment>
-                        <username>${anypoint.username}</username>
-                        <password>${anypoint.password}</password>
-                        <environment>${env}</environment>
-                        <applicationName>${application.name}</applicationName>
-                        <workers>1</workers>
-                        <workerType>Micro</workerType>
-                        <region>us-east-1</region>
+                        <muleVersion>${mule.runtime}</muleVersion>
+                        <clientId>${anypoint.clientId}</clientId>
+                        <clientSecret>${anypoint.clientSecret}</clientSecret>
+                        <environment>${cloudhub.environment}</environment>
+                        <applicationName>${cloudhub.applicationName}</applicationName>
+                        <workers>${cloudhub.workers}</workers>
+                        <workerType>${cloudhub.workerType}</workerType>
+                        <region>${cloudhub.region}</region>
+                        <properties>
+                            <http.port>8081</http.port>
+                        </properties>
                     </cloudHubDeployment>
                 </configuration>
             </plugin>
 
-            <!-- MUnit plugin for testing -->
+            <!-- ===== MUnit Maven Plugin ===== -->
             <plugin>
                 <groupId>com.mulesoft.munit.tools</groupId>
                 <artifactId>munit-maven-plugin</artifactId>
@@ -71,35 +105,24 @@
                 </configuration>
             </plugin>
 
-            <!-- SonarQube plugin -->
+            <!-- ===== SonarQube Plugin ===== -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.11.0.3922</version>
+                <version>4.0.0.4121</version>
             </plugin>
+
+            <!-- ===== Clean Plugin ===== -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.3.2</version>
+            </plugin>
+
         </plugins>
     </build>
 
-    <!-- Environment Profiles -->
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <env>Sandbox</env>
-                <application.name>job-mail-dev</application.name>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>prod</id>
-            <properties>
-                <env>Production</env>
-                <application.name>job-mail-prod</application.name>
-            </properties>
-        </profile>
-    </profiles>
-
-    <!-- Dependencies -->
+    <!-- ======================= DEPENDENCIES ======================= -->
     <dependencies>
         <dependency>
             <groupId>org.mule.connectors</groupId>
@@ -125,8 +148,6 @@
             <version>1.2.7</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-
-        <!-- MUnit dependencies -->
         <dependency>
             <groupId>com.mulesoft.munit</groupId>
             <artifactId>munit-runner</artifactId>
@@ -141,9 +162,14 @@
             <classifier>mule-plugin</classifier>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.27.1</version>
+        </dependency>
     </dependencies>
 
-    <!-- MuleSoft Repositories -->
+    <!-- ======================= REPOSITORIES ======================= -->
     <repositories>
         <repository>
             <id>anypoint-exchange-v3</id>
@@ -161,13 +187,9 @@
         <pluginRepository>
             <id>mulesoft-releases</id>
             <url>https://repository.mulesoft.org/releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
