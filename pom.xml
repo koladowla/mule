@@ -18,47 +18,33 @@
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
         <java.version>17</java.version>
         <encoding>UTF-8</encoding>
-        <sonar.projectKey>Dowla_job_mail</sonar.projectKey>
-        <sonar.projectName>job_mail</sonar.projectName>
-        <sonar.language>java</sonar.language>
-        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
     </properties>
 
     <build>
         <plugins>
-            <!-- Clean plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.3.2</version>
-            </plugin>
-
-            <!-- Mule Maven plugin -->
+            <!-- Mule Maven Plugin -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <id>deploy-to-cloudhub</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                        <configuration>
-                            <cloudHubDeployment>
-                                <username>${anypoint.username}</username>
-                                <password>${anypoint.password}</password>
-                                <applicationName>job-mail-app</applicationName>
-                                <environment>Sandbox</environment>
-                                <workers>1</workers>
-                                <workerType>Micro</workerType>
-                                <region>us-east-1</region>
-                            </cloudHubDeployment>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <anypointPlatform>
+                        <username>${anypoint.username}</username>
+                        <password>${anypoint.password}</password>
+                        <organization>YourOrgName</organization>
+                        <environment>Sandbox</environment>
+                    </anypointPlatform>
+                    <deployment>
+                        <target>CloudHub</target>
+                        <applicationName>job-mail-app</applicationName>
+                        <workers>
+                            <amount>1</amount>
+                            <type>Micro</type>
+                        </workers>
+                        <region>us-east-1</region>
+                    </deployment>
+                </configuration>
             </plugin>
 
             <!-- Sonar Maven plugin -->
@@ -66,6 +52,13 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.11.0.3922</version>
+            </plugin>
+
+            <!-- Clean plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.3.2</version>
             </plugin>
         </plugins>
     </build>
@@ -122,18 +115,7 @@
         <pluginRepository>
             <id>mulesoft-releases</id>
             <url>https://repository.mulesoft.org/releases/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-    <!-- Added distributionManagement for Maven deploy -->
-    <distributionManagement>
-        <repository>
-            <id>mule-exchange</id>
-            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
-        </repository>
-    </distributionManagement>
 
 </project>
