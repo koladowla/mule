@@ -128,4 +128,12 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <!-- Added distributionManagement for Maven deploy -->
+    <distributionManagement>
+        <repository>
+            <id>mule-exchange</id>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+        </repository>
+    </distributionManagement>
+
 </project>
