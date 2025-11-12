@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Basic Project Metadata -->
-    <groupId>{YOUR_GROUP_ID}</groupId> <!-- e.g., com.mycompany -->
-    <artifactId>{YOUR_APP_NAME}</artifactId> <!-- e.g., my-mule-app -->
+    <groupId>NA</groupId> <!-- e.g., com.mycompany -->
+    <artifactId>job_mail</artifactId> <!-- e.g., my-mule-app -->
     <version>1.0.0-SNAPSHOT</version>
     <packaging>mule-application</packaging>
-    <name>{YOUR_APP_NAME}</name>
+    <name>TitanDowla</name>
 
     <!-- Properties for Versions and Deployment -->
     <properties>
@@ -26,9 +26,9 @@
         <muleVersion>${mule.version}</muleVersion> <!-- Matches property -->
         <releaseChannel>LTS</releaseChannel> <!-- EDGE (default), LTS, NONE -->
         <javaVersion>17</javaVersion> <!-- 8 (default), 17 -->
-        <user>{YOUR_ANYPPOINT_USERNAME}</user> <!-- Optional: Use placeholders for Jenkins injection -->
-        <pass>{YOUR_ANYPPOINT_PASSWORD}</pass> <!-- Better: Use encrypted server creds -->
-        <publicURL>https://${appName}.anypoint.mulesoft.com</publicURL> <!-- Custom URL -->
+        <user>TitanDowla</user> <!-- Optional: Use placeholders for Jenkins injection -->
+        <pass>Dowla@123</pass> <!-- Better: Use encrypted server creds -->
+        <publicURL>https://job_mail.anypoint.mulesoft.com</publicURL> <!-- Custom URL -->
         <!-- Jenkins-friendly: Inject via env vars, e.g., -Duser=$ANYPPOINT_USER -->
     </properties>
 
@@ -58,7 +58,7 @@
         <repository>
             <id>anypoint-exchange</id>
             <name>Anypoint Exchange</name>
-            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/{ORGANIZATION_ID}/maven</url> <!-- Replace {ORGANIZATION_ID} -->
+            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/NA/maven</url> <!-- Replace {ORGANIZATION_ID} -->
             <layout>default</layout>
         </repository>
     </distributionManagement>
