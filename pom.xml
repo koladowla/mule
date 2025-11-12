@@ -1,173 +1,186 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Basic Project Metadata -->
-    <groupId>NA</groupId> <!-- e.g., com.mycompany -->
-    <artifactId>job_mail</artifactId> <!-- e.g., my-mule-app -->
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>
+    <artifactId>job_mail</artifactId>
+    <version>1.0.0</version>
     <packaging>mule-application</packaging>
-    <name>TitanDowla</name>
+    <name>job_mail</name>
+    <description>MuleSoft Job Mail Application</description>
 
-    <!-- Properties for Versions and Deployment -->
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version> <!-- Latest as of Nov 2025 -->
-        <mule.version>4.5.0</mule.version> <!-- Update to your Mule runtime version -->
-        <mule.tools.version>3.5.3</mule.tools.version> <!-- For Maven tools -->
-        <maven.compiler.source>17</maven.compiler.source> <!-- Or 8/11 -->
-        <maven.compiler.target>17</maven.compiler.target>
-        <environment>Sandbox</environment> <!-- Default; override in Jenkins with -Denvironment=Production -->
-        <targetName>Cloudhub-US-East-1</targetName> <!-- Shared space example; override in Jenkins -->
-        <appName>${project.artifactId}</appName> <!-- Uses artifactId as app name -->
-        <muleVersion>${mule.version}</muleVersion> <!-- Matches property -->
-        <releaseChannel>LTS</releaseChannel> <!-- EDGE (default), LTS, NONE -->
-        <javaVersion>17</javaVersion> <!-- 8 (default), 17 -->
-        <user>TitanDowla</user> <!-- Optional: Use placeholders for Jenkins injection -->
-        <pass>Dowla@123</pass> <!-- Better: Use encrypted server creds -->
-        <publicURL>https://job_mail.anypoint.mulesoft.com</publicURL> <!-- Custom URL -->
-        <!-- Jenkins-friendly: Inject via env vars, e.g., -Duser=$ANYPPOINT_USER -->
+        <mule.runtime>4.10.0</mule.runtime>
+        <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
+        <munit.version>3.6.1</munit.version>
+        <munit.maven.plugin.version>3.6.1</munit.maven.plugin.version>
+        <java.version>17</java.version>
+        <encoding>UTF-8</encoding>
     </properties>
 
-    <!-- Dependencies: Add your Mule connectors/domains here -->
-    <dependencies>
-        <!-- Mule Runtime -->
-        <dependency>
-            <groupId>org.mule.runtime</groupId>
-            <artifactId>mule-core</artifactId>
-            <version>${mule.version}</version>
-            <classifier>mule-plugin</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Example: HTTP Connector -->
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-http-connector</artifactId>
-            <version>1.9.0</version>
-            <classifier>mule-plugin</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Add more, e.g., database-connector, etc. -->
-    </dependencies>
+    <!-- ===== Maven Profiles for Environment Deployment ===== -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <cloudhub.environment>Sandbox</cloudhub.environment>
+                <cloudhub.applicationName>job-mail-app-dev</cloudhub.applicationName>
+                <cloudhub.region>us-east-1</cloudhub.region>
+                <cloudhub.workers>1</cloudhub.workers>
+                <cloudhub.workerType>Micro</cloudhub.workerType>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <cloudhub.environment>Production</cloudhub.environment>
+                <cloudhub.applicationName>job-mail-app</cloudhub.applicationName>
+                <cloudhub.region>us-east-1</cloudhub.region>
+                <cloudhub.workers>2</cloudhub.workers>
+                <cloudhub.workerType>Small</cloudhub.workerType>
+            </properties>
+        </profile>
+    </profiles>
 
-    <!-- Distribution Management: For Publishing to Exchange -->
-    <distributionManagement>
-        <repository>
-            <id>anypoint-exchange</id>
-            <name>Anypoint Exchange</name>
-            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/NA/maven</url> <!-- Replace {ORGANIZATION_ID} -->
-            <layout>default</layout>
-        </repository>
-    </distributionManagement>
-
-    <!-- Build Configuration -->
     <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <testSourceDirectory>src/test/java</testSourceDirectory>
-
         <plugins>
-            <!-- Mule Maven Plugin: Core for Packaging & Deployment -->
+
+            <!-- ===== Mule Maven Plugin ===== -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <!-- CloudHub 2.0 Deployment Config -->
-                    <cloudhub2Deployment>
-                        <uri>https://anypoint.mulesoft.com</uri>
-                        <provider>MC</provider>
-                        <environment>${environment}</environment>
-                        <target>${targetName}</target>
-                        <muleVersion>${muleVersion}</muleVersion>
-                        <releaseChannel>${releaseChannel}</releaseChannel>
-                        <javaVersion>${javaVersion}</javaVersion>
-                        <applicationName>${appName}</applicationName>
-                        <replicas>1</replicas>
-                        <vCores>0.2</vCores> <!-- Small instance; scale as needed -->
-                        <!-- Authentication: Use <server> for Jenkins (see notes below) -->
-                        <server>anypoint-credentials</server> <!-- References settings.xml server ID -->
-                        <!-- Fallback (insecure for prod): <username>${user}</username><password>${pass}</password> -->
-
-                        <!-- App Properties (injected at deploy time) -->
-                        <properties>
-                            <http.port>8081</http.port>
-                            <app.name>${appName}</app.name>
-                            <!-- Add custom props, e.g., <db.url>jdbc://...</db.url> -->
-                        </properties>
-                        <secureProperties>
-                            <db.password>{ENCRYPTED_DB_PASS}</db.password> <!-- Encrypt via CloudHub -->
-                        </secureProperties>
-
-                        <!-- Logging Config -->
-                        <scopeLoggingConfigurations>
-                            <scopeLoggingConfiguration>
-                                <scope>com.mycompany</scope>
-                                <logLevel>INFO</logLevel>
-                            </scopeLoggingConfiguration>
-                        </scopeLoggingConfigurations>
-
-                        <!-- Integrations -->
-                        <integrations>
-                            <services>
-                                <objectStoreV2>
-                                    <enabled>true</enabled>
-                                </objectStoreV2>
-                            </services>
-                        </integrations>
-
-                        <!-- Deployment Settings -->
-                        <deploymentSettings>
-                            <enforceDeployingReplicasAcrossNodes>true</enforceDeployingReplicasAcrossNodes> <!-- HA -->
-                            <updateStrategy>rolling</updateStrategy> <!-- Safer redeploys -->
-                            <clustered>false</clustered> <!-- Enable for multi-replica clustering -->
-                            <http>
-                                <inbound>
-                                    <publicUrl>${publicURL}</publicUrl>
-                                    <pathRewrite>/api/*</pathRewrite> <!-- For private spaces -->
-                                    <lastMileSecurity>false</lastMileSecurity> <!-- TLS in app -->
-                                    <forwardSslSession>true</forwardSslSession>
-                                </inbound>
-                            </http>
-                            <autoscaling>
-                                <enabled>true</enabled>
-                                <minReplicas>1</minReplicas>
-                                <maxReplicas>2</maxReplicas>
-                            </autoscaling>
-                            <persistentObjectStore>false</persistentObjectStore>
-                            <tracingEnabled>true</tracingEnabled> <!-- OpenTelemetry -->
-                            <disableAmLogForwarding>false</disableAmLogForwarding>
-                            <generateDefaultPublicUrl>true</generateDefaultPublicUrl>
-                        </deploymentSettings>
-
-                        <!-- Business Group (if needed) -->
-                        <businessGroupId>{YOUR_BUSINESS_GROUP_ID}</businessGroupId> <!-- Or use <businessGroup>path</businessGroup> -->
-
-                        <!-- Timeouts & Skips -->
-                        <deploymentTimeout>1200000</deploymentTimeout> <!-- 20 min -->
-                        <skipDeploymentVerification>false</skipDeploymentVerification>
-                    </cloudhub2Deployment>
+                    <classifier>mule-application</classifier>
+                    <deploymentType>cloudhub</deploymentType>
+                    <cloudHubDeployment>
+                        <username>${anypoint.username}</username>
+                        <password>${anypoint.password}</password>
+                        <environment>${cloudhub.environment}</environment>
+                        <applicationName>${cloudhub.applicationName}</applicationName>
+                        <workers>${cloudhub.workers}</workers>
+                        <workerType>${cloudhub.workerType}</workerType>
+                        <region>${cloudhub.region}</region>
+                    </cloudHubDeployment>
                 </configuration>
             </plugin>
 
-            <!-- Compiler Plugin -->
+            <!-- ===== MUnit Plugin ===== -->
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <groupId>com.mulesoft.munit.tools</groupId>
+                <artifactId>munit-maven-plugin</artifactId>
+                <version>${munit.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>munit-tests</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                            <goal>coverage-report</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+                    <coverage>
+                        <runCoverage>true</runCoverage>
+                        <formats>
+                            <format>html</format>
+                        </formats>
+                    </coverage>
                 </configuration>
             </plugin>
 
-            <!-- Surefire for Tests -->
+            <!-- ===== SonarQube Plugin ===== -->
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.11.0.3922</version>
             </plugin>
+
+            <!-- ===== Clean Plugin ===== -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.3.2</version>
+            </plugin>
+
         </plugins>
     </build>
+
+    <!-- ===== Dependencies ===== -->
+    <dependencies>
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-http-connector</artifactId>
+            <version>1.11.0</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-email-connector</artifactId>
+            <version>1.7.7</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-file-connector</artifactId>
+            <version>1.5.5</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-sockets-connector</artifactId>
+            <version>1.2.7</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.munit</groupId>
+            <artifactId>munit-runner</artifactId>
+            <version>${munit.version}</version>
+            <classifier>mule-plugin</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.munit</groupId>
+            <artifactId>munit-tools</artifactId>
+            <version>${munit.version}</version>
+            <classifier>mule-plugin</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.27.1</version>
+        </dependency>
+    </dependencies>
+
+    <!-- ===== Repositories ===== -->
+    <repositories>
+        <repository>
+            <id>anypoint-exchange-v3</id>
+            <name>Anypoint Exchange</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+        </repository>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>https://repository.mulesoft.org/releases/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-releases</id>
+            <url>https://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
