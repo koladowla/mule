@@ -1,90 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.example.mule</groupId>
+
+    <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>
     <artifactId>job_mail</artifactId>
     <version>1.0.0</version>
     <packaging>mule-application</packaging>
 
-    <name>Job Mail Mule Application</name>
+    <name>job_mail</name>
+    <description>MuleSoft application for job_mail</description>
 
     <properties>
+        <mule.version>4.6.22</mule.version>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
         <anypoint.username>${anypoint.username}</anypoint.username>
         <anypoint.password>${anypoint.password}</anypoint.password>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>mulesoft-releases</id>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
-        <!-- Mule Runtime Dependencies -->
-        <dependency>
-            <groupId>org.mule.runtime</groupId>
-            <artifactId>mule-core</artifactId>
-            <version>4.6.2</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Example: Email Connector -->
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-email-connector</artifactId>
-            <version>1.6.6</version>
-        </dependency>
-
-        <!-- Add more connectors/dependencies here -->
+        <!-- Add your Mule dependencies here -->
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Mule Maven Plugin -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <cloudHubDeployment>
+                    <deployment>
+                        <target>cloudhub</target>
                         <username>${anypoint.username}</username>
                         <password>${anypoint.password}</password>
-                        <applicationName>job-mail-app</applicationName>
-                        <workers>1</workers>
-                        <workerType>Micro</workerType>
-                        <environment>Sandbox</environment>
+                        <applicationName>job_mail</applicationName>
                         <region>us-east-1</region>
-                        <runtime>4.6.2</runtime>
-                    </cloudHubDeployment>
-
-                    <exchangeDeployment>
-                        <exchangeId>com.example:job-mail:1.0.0</exchangeId>
-                        <provider>mule</provider>
-                        <version>1.0.0</version>
-                    </exchangeDeployment>
-                </configuration>
-            </plugin>
-
-            <!-- Compiler Plugin (optional, for Java sources) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                        <workers>
+                            <amount>1</amount>
+                            <type>Micro</type>
+                        </workers>
+                        <runtime>4.6.0</runtime>
+                    </deployment>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>mulesoft-releases</id>
-            <name>MuleSoft Releases</name>
-            <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
-        </repository>
-    </repositories>
 
 </project>
