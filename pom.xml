@@ -29,42 +29,29 @@
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <anypointPlatform>
+                    <cloudHubDeployment>
                         <username>${anypoint.username}</username>
                         <password>${anypoint.password}</password>
-                        <organization>YourOrgName</organization>
-                        <environment>Sandbox</environment>
-                    </anypointPlatform>
-                    <deployment>
-                        <target>CloudHub</target>
                         <applicationName>job-mail-app</applicationName>
-                        <workers>
-                            <amount>1</amount>
-                            <type>Micro</type>
-                        </workers>
+                        <environment>Sandbox</environment>
+                        <workers>1</workers>
+                        <workerType>Micro</workerType>
                         <region>us-east-1</region>
-                    </deployment>
+                    </cloudHubDeployment>
                 </configuration>
             </plugin>
 
-            <!-- Sonar Maven plugin -->
+            <!-- Sonar Maven Plugin (Optional) -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.11.0.3922</version>
             </plugin>
-
-            <!-- Clean plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.3.2</version>
-            </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <!-- Mule connectors -->
+        <!-- Mule Connectors -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
@@ -77,45 +64,14 @@
             <version>1.7.7</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-file-connector</artifactId>
-            <version>1.5.5</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-sockets-connector</artifactId>
-            <version>1.2.7</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-
-        <!-- Commons library -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>1.27.1</version>
-        </dependency>
     </dependencies>
 
-    <repositories>
+    <!-- Deployment to MuleSoft Exchange -->
+    <distributionManagement>
         <repository>
-            <id>anypoint-exchange-v3</id>
-            <name>Anypoint Exchange</name>
+            <id>mule-exchange</id>
             <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
         </repository>
-        <repository>
-            <id>mulesoft-releases</id>
-            <name>MuleSoft Releases Repository</name>
-            <url>https://repository.mulesoft.org/releases/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>mulesoft-releases</id>
-            <url>https://repository.mulesoft.org/releases/</url>
-        </pluginRepository>
-    </pluginRepositories>
+    </distributionManagement>
 
 </project>
