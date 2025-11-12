@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>3607ebc0-9f6f-45e6-81c1-121fa7ccfb16</groupId>
@@ -16,8 +17,6 @@
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
-        <munit.version>2.9.0</munit.version>
-        <munit.maven.plugin.version>2.9.0</munit.maven.plugin.version>
         <java.version>17</java.version>
         <encoding>UTF-8</encoding>
 
@@ -63,7 +62,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <classifier>mule-application</classifier>
-                    <deploymentType>cloudhub</deploymentType>
                     <cloudHubDeployment>
                         <muleVersion>${mule.runtime}</muleVersion>
                         <clientId>${anypoint.clientId}</clientId>
@@ -80,32 +78,7 @@
                 </configuration>
             </plugin>
 
-            <!-- ===== MUnit Maven Plugin ===== -->
-            <plugin>
-                <groupId>com.mulesoft.munit.tools</groupId>
-                <artifactId>munit-maven-plugin</artifactId>
-                <version>${munit.maven.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>munit-tests</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                            <goal>coverage-report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <coverage>
-                        <runCoverage>true</runCoverage>
-                        <formats>
-                            <format>html</format>
-                        </formats>
-                    </coverage>
-                </configuration>
-            </plugin>
-
-            <!-- ===== SonarQube Plugin ===== -->
+            <!-- ===== SonarQube Plugin (Optional) ===== -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
@@ -149,20 +122,6 @@
             <classifier>mule-plugin</classifier>
         </dependency>
         <dependency>
-            <groupId>com.mulesoft.munit</groupId>
-            <artifactId>munit-runner</artifactId>
-            <version>${munit.version}</version>
-            <classifier>mule-plugin</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mulesoft.munit</groupId>
-            <artifactId>munit-tools</artifactId>
-            <version>${munit.version}</version>
-            <classifier>mule-plugin</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>1.27.1</version>
@@ -172,11 +131,6 @@
     <!-- ======================= REPOSITORIES ======================= -->
     <repositories>
         <repository>
-            <id>anypoint-exchange-v3</id>
-            <name>Anypoint Exchange</name>
-            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
-        </repository>
-        <repository>
             <id>mulesoft-releases</id>
             <name>MuleSoft Releases Repository</name>
             <url>https://repository.mulesoft.org/releases/</url>
@@ -185,6 +139,11 @@
             <id>mulesoft-snapshots</id>
             <name>MuleSoft Snapshots</name>
             <url>https://repository.mulesoft.org/snapshots/</url>
+        </repository>
+        <repository>
+            <id>anypoint-exchange-v3</id>
+            <name>Anypoint Exchange</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
         </repository>
     </repositories>
 
