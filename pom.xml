@@ -26,26 +26,17 @@
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-
                 <configuration>
-                    <!-- Mule Runtime version -->
                     <muleVersion>${mule.runtime.version}</muleVersion>
-
-                    <!-- Deployment Configuration -->
                     <deploymentType>cloudHub</deploymentType>
                     <applicationName>${project.artifactId}</applicationName>
                     <environment>${cloudhub.env}</environment>
-
-                    <!-- Matches the <server> ID in settings.xml -->
                     <server>Dowla</server>
-
-                    <!-- Optional but recommended -->
                     <region>us-east-1</region>
                     <workerType>MICRO</workerType>
                     <workers>1</workers>
                     <objectStoreV2>true</objectStoreV2>
                 </configuration>
-
                 <executions>
                     <execution>
                         <id>deploy-to-cloudhub</id>
@@ -60,7 +51,6 @@
     </build>
 
     <dependencies>
-        <!-- Mule Core -->
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-core</artifactId>
@@ -68,7 +58,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- HTTP Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
@@ -76,7 +65,6 @@
             <classifier>mule-plugin</classifier>
         </dependency>
 
-        <!-- JSON Module -->
         <dependency>
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-json-module</artifactId>
@@ -84,5 +72,27 @@
             <classifier>mule-plugin</classifier>
         </dependency>
     </dependencies>
+
+    <!-- ✅ MuleSoft Repositories -->
+    <repositories>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>mulesoft-snapshots</id>
+            <name>MuleSoft Snapshots Repository</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Plugin Releases Repository</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
