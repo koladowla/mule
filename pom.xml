@@ -15,46 +15,60 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Mule runtime & plugin versions -->
         <app.runtime>4.10.1</app.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
+
+        <!-- CloudHub 2.0 deployment properties -->
+        <anypoint.env>Sandbox</anypoint.env>
+        <anypoint.region>us-east-1</anypoint.region>
+        <anypoint.organizationId>aef0d657-ae25-4c7c-b3f1-6ec206625075</anypoint.organizationId>
+        <connectedApp.clientId>beadf31e3c9846bda9fa08c3fbe2b2a5</connectedApp.clientId>
+        <connectedApp.clientSecret>82b728772c1D488bbbd092772B888ea2</connectedApp.clientSecret>
+        <application.name>job_mail1</application.name>
     </properties>
 
     <build>
         <plugins>
+            <!-- Clean plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
             </plugin>
 
+            <!-- Mule Maven Plugin -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
+
                 <configuration>
                     <classifier>mule-application</classifier>
-                    <deploymentType>cloudHub2</deploymentType>
 
-                    <cloudHub2Deployment>
-                        <target>Sandbox</target> <!-- Your CloudHub 2.0 environment name -->
-                        <organizationId>aef0d657-ae25-4c7c-b3f1-6ec206625075</organizationId>
-                        <connectedAppClientId>beadf31e3c9846bda9fa08c3fbe2b2a5</connectedAppClientId>
-                        <connectedAppClientSecret>82b728772c1D488bbbd092772B888ea2</connectedAppClientSecret>
-                        <applicationName>job_mail1</applicationName>
+                    <deployment>
+                        <type>cloudHub2</type>
+                        <target>${anypoint.env}</target>
+                        <organizationId>${anypoint.organizationId}</organizationId>
+                        <connectedAppClientId>${connectedApp.clientId}</connectedAppClientId>
+                        <connectedAppClientSecret>${connectedApp.clientSecret}</connectedAppClientSecret>
+                        <applicationName>${application.name}</applicationName>
                         <muleVersion>${app.runtime}</muleVersion>
-                        <region>us-east-1</region>
+                        <region>${anypoint.region}</region>
                         <replicas>1</replicas>
                         <workers>1</workers>
                         <workerType>MICRO</workerType>
                         <updateStrategy>rolling</updateStrategy>
-                    </cloudHub2Deployment>
+                    </deployment>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <dependencies>
+        <!-- HTTP Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
@@ -62,6 +76,7 @@
             <classifier>mule-plugin</classifier>
         </dependency>
 
+        <!-- Sockets Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-sockets-connector</artifactId>
@@ -69,6 +84,7 @@
             <classifier>mule-plugin</classifier>
         </dependency>
 
+        <!-- Email Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-email-connector</artifactId>
@@ -77,6 +93,7 @@
         </dependency>
     </dependencies>
 
+    <!-- Repositories -->
     <repositories>
         <repository>
             <id>anypoint-exchange-v3</id>
@@ -97,5 +114,4 @@
             <url>https://repository.mulesoft.org/releases/</url>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
