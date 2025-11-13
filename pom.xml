@@ -13,8 +13,8 @@
     <description>MuleSoft Job Mail Application</description>
 
     <properties>
-        <mule.runtime>4.3.0</mule.runtime>
-        <mule.maven.plugin.version>3.3.5</mule.maven.plugin.version>
+        <mule.runtime>4.9.5</mule.runtime>
+        <mule.maven.plugin.version>3.4.0</mule.maven.plugin.version>
         <munit.version>2.2.4</munit.version>
         <munit.maven.plugin.version>2.2.4</munit.maven.plugin.version>
         <java.version>8</java.version>
@@ -126,5 +126,13 @@
             <url>https://repository.mulesoft.org/releases/</url>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>https://repository.mulesoft.org/releases/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
