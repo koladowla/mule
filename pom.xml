@@ -13,7 +13,7 @@
 
     <properties>
         <!-- Mule runtime & Maven plugin versions -->
-        <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
+        <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
         <mule.runtime.version>4.9.11</mule.runtime.version>
 
         <!-- CloudHub 2.0 configuration -->
@@ -35,7 +35,7 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <!-- Optional: Add MuleSoft release repositories -->
+    <!-- Optional: MuleSoft release repositories -->
     <repositories>
         <repository>
             <id>mulesoft-releases</id>
@@ -47,12 +47,6 @@
         </repository>
     </repositories>
 
-    <dependencies>
-        <!-- Mule connectors packaged with the application in Studio -->
-        <!-- No explicit dependency needed; included here for reference -->
-        <!-- Use provided scope for any external Java libraries -->
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -63,14 +57,17 @@
                 <configuration>
                     <muleVersion>${mule.runtime.version}</muleVersion>
 
-                    <!-- CloudHub 2.0 deployment (4.5.3 syntax) -->
+                    <!-- CloudHub 2.0 deployment -->
                     <cloudHubDeployment>
                         <applicationName>${app.name}</applicationName>
-                        <workers amount="1" type="Micro"/>
+                        <workers>
+                            <amount>1</amount>
+                            <type>Micro</type>
+                        </workers>
                         <region>${anypoint.region}</region>
                         <environment>${anypoint.env.name}</environment>
                         <properties>
-                            <!-- Optional Mule properties (global config, API keys, etc.) -->
+                            <!-- Optional Mule properties -->
                         </properties>
                     </cloudHubDeployment>
 
