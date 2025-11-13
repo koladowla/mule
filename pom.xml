@@ -38,9 +38,9 @@
 
                     <cloudHub2Deployment>
                         <target>Sandbox</target> <!-- Your CloudHub 2.0 environment name -->
-                        <organizationId>YOUR_ORG_ID</organizationId>
-                        <connectedAppClientId>YOUR_CLIENT_ID</connectedAppClientId>
-                        <connectedAppClientSecret>YOUR_CLIENT_SECRET</connectedAppClientSecret>
+                        <organizationId>aef0d657-ae25-4c7c-b3f1-6ec206625075</organizationId>
+                        <connectedAppClientId>beadf31e3c9846bda9fa08c3fbe2b2a5</connectedAppClientId>
+                        <connectedAppClientSecret>82b728772c1D488bbbd092772B888ea2</connectedAppClientSecret>
                         <applicationName>job_mail1</applicationName>
                         <muleVersion>${app.runtime}</muleVersion>
                         <region>us-east-1</region>
