@@ -15,7 +15,7 @@
 
     <properties>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
-        <mule.runtime.version>4.9.1</mule.runtime.version>
+        <mule.runtime.version>4.10.1</mule.runtime.version>
 
         <!-- CloudHub 2.0 Configuration -->
         <anypoint.org.id>aef0d657-ae25-4c7c-b3f1-6ec206625075</anypoint.org.id>
@@ -23,9 +23,9 @@
         <anypoint.region>us-east-1</anypoint.region>
         <app.name>job_mail1</app.name>
 
-        <!-- Connected App credentials (for CloudHub 2.0) -->
+        <!-- Connected App credentials (CloudHub 2.0) -->
         <anypoint.client.id>beadf31e3c9846bda9fa08c3fbe2b2a5</anypoint.client.id>
-        <anypoint.client.secret>PUT_YOUR_CLIENT_SECRET_HERE</anypoint.client.secret>
+        <anypoint.client.secret>82b728772c1D488bbbd092772B888ea2</anypoint.client.secret>
     </properties>
 
     <build>
@@ -33,26 +33,27 @@
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
-                <version>4.5.3</version>
+                <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-                <configuration>
-                    <deploymentType>cloudhub2</deploymentType>
 
+                <configuration>
                     <cloudHub2Deployment>
                         <uri>https://anypoint.mulesoft.com</uri>
-                        <organizationId>aef0d657-ae25-4c7c-b3f1-6ec206625075</organizationId>
-                        <environment>Sandbox</environment>
+                        <organizationId>${anypoint.org.id}</organizationId>
+                        <environmentName>${anypoint.env.name}</environmentName>
+                        <region>${anypoint.region}</region>
 
-                        <connectedAppClientId>beadf31e3c9846bda9fa08c3fbe2b2a5</connectedAppClientId>
-                        <connectedAppClientSecret>82b728772c1D488bbbd092772B888ea2</connectedAppClientSecret>
+                        <clientId>${anypoint.client.id}</clientId>
+                        <clientSecret>${anypoint.client.secret}</clientSecret>
 
-                        <applicationName>job_mail1</applicationName>
-                        <muleVersion>4.10.1</muleVersion>
-                        <region>us-east-1</region>
+                        <applicationName>${app.name}</applicationName>
+                        <muleVersion>${mule.runtime.version}</muleVersion>
+
                         <replicas>1</replicas>
                         <workers>1</workers>
                         <workerType>MICRO</workerType>
                         <objectStoreV2>true</objectStoreV2>
+                        <updateStrategy>rolling</updateStrategy>
                     </cloudHub2Deployment>
                 </configuration>
             </plugin>
