@@ -15,7 +15,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
         <app.runtime>4.10.1</app.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
     </properties>
@@ -35,17 +34,21 @@
                 <extensions>true</extensions>
                 <configuration>
                     <classifier>mule-application</classifier>
-                    <deploymentType>cloudhub</deploymentType>
-                    <cloudHubDeployment>
-                        <username>TitanDowla</username>
-                        <password>Dowla@123</password>
-                        <environment>Sandbox</environment>
+                    <deploymentType>cloudHub2</deploymentType>
+
+                    <cloudHub2Deployment>
+                        <target>Sandbox</target> <!-- Your CloudHub 2.0 environment name -->
+                        <organizationId>YOUR_ORG_ID</organizationId>
+                        <connectedAppClientId>YOUR_CLIENT_ID</connectedAppClientId>
+                        <connectedAppClientSecret>YOUR_CLIENT_SECRET</connectedAppClientSecret>
                         <applicationName>job_mail1</applicationName>
                         <muleVersion>${app.runtime}</muleVersion>
-                        <workers>1</workers>
-                        <workerType>Micro</workerType>
                         <region>us-east-1</region>
-                    </cloudHubDeployment>
+                        <replicas>1</replicas>
+                        <workers>1</workers>
+                        <workerType>MICRO</workerType>
+                        <updateStrategy>rolling</updateStrategy>
+                    </cloudHub2Deployment>
                 </configuration>
             </plugin>
         </plugins>
@@ -79,26 +82,19 @@
             <id>anypoint-exchange-v3</id>
             <name>Anypoint Exchange</name>
             <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
-            <layout>default</layout>
         </repository>
-
         <repository>
             <id>mulesoft-releases</id>
-            <name>MuleSoft Releases Repository</name>
+            <name>MuleSoft Releases</name>
             <url>https://repository.mulesoft.org/releases/</url>
-            <layout>default</layout>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
-            <name>MuleSoft Releases Repository</name>
-            <layout>default</layout>
+            <name>MuleSoft Releases</name>
             <url>https://repository.mulesoft.org/releases/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 
