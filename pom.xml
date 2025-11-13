@@ -22,10 +22,18 @@
         <anypoint.region>us-east-1</anypoint.region>
         <app.name>job_mail1</app.name>
 
-        <!-- Connected App credentials (for local testing only) -->
+        <!-- Connected App credentials (hardcoded) -->
         <anypoint.client.id>beadf31e3c9846bda9fa08c3fbe2b2a5</anypoint.client.id>
         <anypoint.client.secret>82b728772c1D488bbbd092772B888ea2</anypoint.client.secret>
     </properties>
+
+    <!-- MuleSoft Public Plugin Repository -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-public</id>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <plugins>
@@ -48,7 +56,7 @@
                         <region>${anypoint.region}</region>
                         <environment>${anypoint.env.name}</environment>
                         <properties>
-                            <!-- Optional: Mule properties -->
+                            <!-- Optional Mule properties -->
                         </properties>
                     </cloudHubDeployment>
 
