@@ -1,82 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<settings>
+  <servers>
+    <server>
+      <id>Dowla</id>
+      <username>YOUR_ANYPOINT_USERNAME</username>
+      <password>YOUR_ANYPOINT_PASSWORD</password>
+    </server>
+  </servers>
 
-  <modelVersion>4.0.0</modelVersion>
+  <profiles>
+    <profile>
+      <id>anypoint</id>
+      <properties>
+        <anypoint.clientId>YOUR_CLIENT_ID</anypoint.clientId>
+        <anypoint.clientSecret>YOUR_CLIENT_SECRET</anypoint.clientSecret>
+      </properties>
+    </profile>
+  </profiles>
 
-  <groupId>com.dowla</groupId>
-  <artifactId>job_mail</artifactId>
-  <version>1.0.0</version>
-  <packaging>mule-application</packaging>
-  <name>job_mail</name>
-
-  <!-- ============================= -->
-  <!--         PROPERTIES            -->
-  <!-- ============================= -->
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
-    <mule.runtime.version>4.5.3</mule.runtime.version>
-    <connectedAppGrantType>client_credentials</connectedAppGrantType>
-    <anypoint.platform.clientId>${anypoint.clientId}</anypoint.platform.clientId>
-    <anypoint.platform.clientSecret>${anypoint.clientSecret}</anypoint.platform.clientSecret>
-
-    <!-- SonarCloud -->
-    <sonar.organization>dowlatitan</sonar.organization>
-    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.projectKey>job_mail</sonar.projectKey>
-  </properties>
-
-  <!-- ============================= -->
-  <!--         BUILD CONFIG           -->
-  <!-- ============================= -->
-  <build>
-    <plugins>
-
-      <!-- Mule Maven Plugin -->
-      <plugin>
-        <groupId>org.mule.tools.maven</groupId>
-        <artifactId>mule-maven-plugin</artifactId>
-        <version>${mule.maven.plugin.version}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <classifier>mule-application</classifier>
-          <runtime>${mule.runtime.version}</runtime>
-          
-          <!-- Deployment Config for CloudHub 2.0 -->
-          <deployment>
-            <target>CloudHub2</target>
-            <environment>Sandbox</environment>
-            <region>us-east-1</region>
-            <workers>1</workers>
-            <workerType>Micro</workerType>
-            <connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
-            <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
-            <connectedAppGrantType>${connectedAppGrantType}</connectedAppGrantType>
-          </deployment>
-        </configuration>
-      </plugin>
-
-      <!-- SonarCloud Plugin -->
-      <plugin>
-        <groupId>org.sonarsource.scanner.maven</groupId>
-        <artifactId>sonar-maven-plugin</artifactId>
-        <version>3.11.0.3922</version>
-      </plugin>
-
-    </plugins>
-  </build>
-
-  <!-- ============================= -->
-  <!--         REPOSITORIES          -->
-  <!-- ============================= -->
-  <repositories>
-    <repository>
-      <id>mule-releases</id>
-      <name>MuleSoft Releases Repository</name>
-      <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
-    </repository>
-  </repositories>
-
-</project>
+  <activeProfiles>
+    <activeProfile>anypoint</activeProfile>
+  </activeProfiles>
+</settings>
