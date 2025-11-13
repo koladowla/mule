@@ -27,7 +27,6 @@
         <anypoint.client.secret>82b728772c1D488bbbd092772B888ea2</anypoint.client.secret>
     </properties>
 
-    <!-- Repositories -->
     <repositories>
         <repository>
             <id>mulesoft-releases</id>
@@ -46,6 +45,34 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <dependencies>
+        <!-- HTTP connector -->
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-http-connector</artifactId>
+            <version>1.11.0</version>
+            <classifier>mule-plugin</classifier>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Email connector -->
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-email-connector</artifactId>
+            <version>1.7.7</version>
+            <classifier>mule-plugin</classifier>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Mule EE runtime -->
+        <dependency>
+            <groupId>org.mule.runtime</groupId>
+            <artifactId>mule-ee</artifactId>
+            <version>4.9.11</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -56,7 +83,7 @@
                 <configuration>
                     <muleVersion>${mule.runtime.version}</muleVersion>
 
-                    <!-- Automatically download Mule runtime and all required connectors -->
+                    <!-- Automatically download Mule runtime and connectors -->
                     <download>
                         <muleRuntime>true</muleRuntime>
                         <mulePlugin>true</mulePlugin>
@@ -68,7 +95,6 @@
                         <workers amount="1" type="Micro"/>
                         <region>${anypoint.region}</region>
                         <environment>${anypoint.env.name}</environment>
-                        <properties/>
                     </cloudHubDeployment>
 
                     <!-- Connected App credentials -->
