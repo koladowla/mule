@@ -5,15 +5,13 @@
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.mycompany</groupId>
+    <groupId>com.example.mule</groupId>
     <artifactId>job_mail1</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>mule-application</packaging>
 
-    <name>job_mail1</name>
-
     <properties>
+        <!-- Mule runtime & Maven plugin versions -->
         <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
         <mule.runtime.version>4.10.1</mule.runtime.version>
 
@@ -23,7 +21,7 @@
         <anypoint.region>us-east-1</anypoint.region>
         <app.name>job_mail1</app.name>
 
-        <!-- Connected App credentials (CloudHub 2.0) -->
+        <!-- Connected App credentials (for local testing only) -->
         <anypoint.client.id>beadf31e3c9846bda9fa08c3fbe2b2a5</anypoint.client.id>
         <anypoint.client.secret>82b728772c1D488bbbd092772B888ea2</anypoint.client.secret>
     </properties>
@@ -35,74 +33,30 @@
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-
                 <configuration>
-                    <cloudHub2Deployment>
-                        <uri>https://anypoint.mulesoft.com</uri>
-                        <organizationId>${anypoint.org.id}</organizationId>
-                        <environmentName>${anypoint.env.name}</environmentName>
-                        <region>${anypoint.region}</region>
+                    <!-- Mule Runtime -->
+                    <muleVersion>${mule.runtime.version}</muleVersion>
 
-                        <clientId>${anypoint.client.id}</clientId>
-                        <clientSecret>${anypoint.client.secret}</clientSecret>
-
+                    <!-- CloudHub 2.0 deployment -->
+                    <cloudHubDeployment>
                         <applicationName>${app.name}</applicationName>
-                        <muleVersion>${mule.runtime.version}</muleVersion>
+                        <workers>
+                            <amount>1</amount>
+                            <type>Micro</type>
+                        </workers>
+                        <region>${anypoint.region}</region>
+                        <environment>${anypoint.env.name}</environment>
+                        <properties>
+                            <!-- Optional: Mule properties -->
+                        </properties>
+                    </cloudHubDeployment>
 
-                        <replicas>1</replicas>
-                        <workers>1</workers>
-                        <workerType>MICRO</workerType>
-                        <objectStoreV2>true</objectStoreV2>
-                        <updateStrategy>rolling</updateStrategy>
-                    </cloudHub2Deployment>
+                    <!-- Connected App credentials -->
+                    <connectedAppClientId>${anypoint.client.id}</connectedAppClientId>
+                    <connectedAppClientSecret>${anypoint.client.secret}</connectedAppClientSecret>
+                    <organizationId>${anypoint.org.id}</organizationId>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-http-connector</artifactId>
-            <version>1.11.0</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-sockets-connector</artifactId>
-            <version>1.2.7</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-email-connector</artifactId>
-            <version>1.7.7</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-    </dependencies>
-
-    <repositories>
-        <repository>
-            <id>anypoint-exchange-v3</id>
-            <name>Anypoint Exchange</name>
-            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
-        </repository>
-
-        <repository>
-            <id>mulesoft-releases</id>
-            <name>MuleSoft Releases</name>
-            <url>https://repository.mulesoft.org/releases/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>mulesoft-releases</id>
-            <name>MuleSoft Releases</name>
-            <url>https://repository.mulesoft.org/releases/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
 </project>
