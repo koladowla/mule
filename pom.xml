@@ -17,7 +17,7 @@
         <mule.maven.plugin.version>3.4.0</mule.maven.plugin.version>
         <munit.version>2.2.4</munit.version>
         <munit.maven.plugin.version>2.2.4</munit.maven.plugin.version>
-        <java.version>8</java.version>
+        <java.version>8</java.version>  <!-- consider updating to 11 or 17 if runtime supports -->
         <encoding>UTF-8</encoding>
     </properties>
 
@@ -76,11 +76,11 @@
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-email-connector</artifactId>
-            <version>1.5.8</version>
+            <version>1.7.3</version>   <!-- updated version available :contentReference[oaicite:2]{index=2} -->
             <classifier>mule-plugin</classifier>
         </dependency>
 
-        <!-- Mule File Connector (if used in flow) -->
+        <!-- Mule File Connector (if actually used) -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-file-connector</artifactId>
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-google-drive-connector</artifactId>
-            <version>2.0.4</version>
+            <version>1.1.4</version>   <!-- version alignment with release notes :contentReference[oaicite:3]{index=3} -->
             <classifier>mule-plugin</classifier>
         </dependency>
 
