@@ -5,6 +5,7 @@
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.example.mule</groupId>
     <artifactId>job_mail1</artifactId>
     <version>1.0.0</version>
@@ -12,8 +13,8 @@
 
     <properties>
         <!-- Mule runtime & Maven plugin versions -->
-        <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
-        <mule.runtime.version>4.10.1</mule.runtime.version>
+        <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
+        <mule.runtime.version>4.9.11</mule.runtime.version>
 
         <!-- CloudHub 2.0 Configuration -->
         <anypoint.org.id>aef0d657-ae25-4c7c-b3f1-6ec206625075</anypoint.org.id>
