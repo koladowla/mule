@@ -22,7 +22,7 @@
         <anypoint.region>us-east-1</anypoint.region>
         <app.name>job_mail1</app.name>
 
-        <!-- Connected App credentials (hardcoded) -->
+        <!-- Connected App credentials (hardcoded for local/CI use) -->
         <anypoint.client.id>beadf31e3c9846bda9fa08c3fbe2b2a5</anypoint.client.id>
         <anypoint.client.secret>82b728772c1D488bbbd092772B888ea2</anypoint.client.secret>
     </properties>
@@ -46,13 +46,10 @@
                     <!-- Mule Runtime -->
                     <muleVersion>${mule.runtime.version}</muleVersion>
 
-                    <!-- CloudHub 2.0 deployment -->
+                    <!-- CloudHub 2.0 deployment (4.5.3 syntax) -->
                     <cloudHubDeployment>
                         <applicationName>${app.name}</applicationName>
-                        <workers>
-                            <amount>1</amount>
-                            <type>Micro</type>
-                        </workers>
+                        <workers amount="1" type="Micro"/>
                         <region>${anypoint.region}</region>
                         <environment>${anypoint.env.name}</environment>
                         <properties>
