@@ -15,39 +15,56 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <app.runtime>4.10.1</app.runtime>
+
+        <app.runtime>4.9.11</app.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
     </properties>
 
     <build>
         <plugins>
+            <!-- Clean plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
             </plugin>
 
+            <!-- Mule Maven Plugin for CloudHub 2.0 Deployment -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <classifier>mule-application</classifier>
-                    <deployment>
-                        <type>cloudHub2</type>
-                        <target>Sandbox</target>
-                        <organizationId>aef0d657-ae25-4c7c-b3f1-6ec206625075</organizationId>
-                        <connectedAppClientId>beadf31e3c9846bda9fa08c3fbe2b2a5</connectedAppClientId>
-                        <connectedAppClientSecret>82b728772c1D488bbbd092772B888ea2</connectedAppClientSecret>
-                        <applicationName>job_mail1</applicationName>
+                    <cloudhub2Deployment>
+                        <uri>https://anypoint.mulesoft.com</uri>
+                        <provider>MC</provider>
+                        <environment>Sandbox</environment>
                         <muleVersion>${app.runtime}</muleVersion>
-                        <region>us-east-1</region>
+
+                        <!-- 🔐 Credentials -->
+                        <username>TitanDowla</username>
+                        <password>Dowla@123</password>
+
+                        <!-- 🌐 Deployment Configuration -->
+                        <applicationName>job_mail1</applicationName>
+                        <businessGroupId>aef0d657-ae25-4c7c-b3f1-6ec206625075</businessGroupId>
+                        <target>CloudHub-US-East-1</target>
                         <replicas>1</replicas>
-                        <workers>1</workers>
-                        <workerType>MICRO</workerType>
-                        <updateStrategy>rolling</updateStrategy>
-                    </deployment>
+                        <vCores>0.2</vCores>
+
+                        <!-- ⚙️ Optional Deployment Settings -->
+                        <deploymentSettings>
+                            <updateStrategy>recreate</updateStrategy>
+                            <http>
+                                <inbound>
+                                    <publicUrl>https://job_mail1.us-east-1.cloudhub.io</publicUrl>
+                                    <forwardSslSession>true</forwardSslSession>
+                                    <lastMileSecurity>false</lastMileSecurity>
+                                </inbound>
+                            </http>
+                        </deploymentSettings>
+                    </cloudhub2Deployment>
                 </configuration>
             </plugin>
         </plugins>
@@ -81,19 +98,26 @@
             <id>anypoint-exchange-v3</id>
             <name>Anypoint Exchange</name>
             <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+            <layout>default</layout>
         </repository>
+
         <repository>
             <id>mulesoft-releases</id>
-            <name>MuleSoft Releases</name>
+            <name>MuleSoft Releases Repository</name>
             <url>https://repository.mulesoft.org/releases/</url>
+            <layout>default</layout>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
-            <name>MuleSoft Releases</name>
+            <name>MuleSoft Releases Repository</name>
+            <layout>default</layout>
             <url>https://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 
