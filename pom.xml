@@ -12,11 +12,10 @@
     <packaging>mule-application</packaging>
 
     <properties>
-        <!-- Mule runtime & Maven plugin versions -->
         <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
         <mule.runtime.version>4.9.11</mule.runtime.version>
 
-        <!-- CloudHub 2.0 configuration -->
+        <!-- CloudHub 2.0 config -->
         <anypoint.org.id>aef0d657-ae25-4c7c-b3f1-6ec206625075</anypoint.org.id>
         <anypoint.env.name>Sandbox</anypoint.env.name>
         <anypoint.region>us-east-1</anypoint.region>
@@ -27,15 +26,7 @@
         <anypoint.client.secret>82b728772c1D488bbbd092772B888ea2</anypoint.client.secret>
     </properties>
 
-    <!-- MuleSoft plugin repository -->
-    <pluginRepositories>
-        <pluginRepository>
-            <id>mulesoft-public</id>
-            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <!-- MuleSoft release repositories -->
+    <!-- Repositories -->
     <repositories>
         <repository>
             <id>mulesoft-releases</id>
@@ -47,6 +38,41 @@
         </repository>
     </repositories>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-public</id>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <!-- HTTP Connector -->
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-http-connector</artifactId>
+            <version>1.6.5</version>
+            <classifier>mule-plugin</classifier>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Email Connector -->
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-email-connector</artifactId>
+            <version>1.5.2</version>
+            <classifier>mule-plugin</classifier>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Mule EE Runtime -->
+        <dependency>
+            <groupId>org.mule.runtime</groupId>
+            <artifactId>mule-ee</artifactId>
+            <version>4.9.11</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -56,16 +82,17 @@
                 <extensions>true</extensions>
                 <configuration>
                     <muleVersion>${mule.runtime.version}</muleVersion>
+                    <download>
+                        <muleRuntime>true</muleRuntime>
+                    </download>
 
-                    <!-- CloudHub 2.0 deployment -->
+                    <!-- CloudHub 2.0 -->
                     <cloudHubDeployment>
                         <applicationName>${app.name}</applicationName>
                         <workers amount="1" type="Micro"/>
                         <region>${anypoint.region}</region>
                         <environment>${anypoint.env.name}</environment>
-                        <properties>
-                            <!-- Optional Mule properties -->
-                        </properties>
+                        <properties/>
                     </cloudHubDeployment>
 
                     <!-- Connected App credentials -->
