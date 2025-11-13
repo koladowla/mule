@@ -10,7 +10,6 @@
     <version>1.0.0</version>
     <packaging>mule-application</packaging>
     <name>job_mail</name>
-
     <description>MuleSoft Job Mail Application</description>
 
     <properties>
@@ -19,7 +18,7 @@
         <java.version>17</java.version>
         <encoding>UTF-8</encoding>
 
-        <!-- SonarQube Settings -->
+        <!-- SonarQube -->
         <sonar.projectKey>Dowla_job_mail</sonar.projectKey>
         <sonar.projectName>job_mail</sonar.projectName>
         <sonar.language>java</sonar.language>
@@ -28,14 +27,14 @@
 
     <build>
         <plugins>
-            <!-- Clean build -->
+            <!-- Clean plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
 
-            <!-- Mule build & deployment -->
+            <!-- Mule Maven Plugin for CloudHub Deployment -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -45,8 +44,8 @@
                     <classifier>mule-application</classifier>
                     <deploymentType>cloudhub</deploymentType>
                     <cloudHubDeployment>
-                        <!-- Use credentials from settings.xml -->
-                        <server>anypoint</server>
+                        <connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
+                        <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
                         <environment>Sandbox</environment>
                         <applicationName>job-mail-app</applicationName>
                         <workers>1</workers>
@@ -56,7 +55,7 @@
                 </configuration>
             </plugin>
 
-            <!-- SonarQube Scanner -->
+            <!-- SonarQube plugin -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
@@ -66,7 +65,6 @@
     </build>
 
     <dependencies>
-        <!-- HTTP Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
@@ -74,7 +72,6 @@
             <classifier>mule-plugin</classifier>
         </dependency>
 
-        <!-- Email Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-email-connector</artifactId>
@@ -82,7 +79,6 @@
             <classifier>mule-plugin</classifier>
         </dependency>
 
-        <!-- File Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-file-connector</artifactId>
@@ -90,7 +86,6 @@
             <classifier>mule-plugin</classifier>
         </dependency>
 
-        <!-- Sockets Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-sockets-connector</artifactId>
@@ -98,7 +93,6 @@
             <classifier>mule-plugin</classifier>
         </dependency>
 
-        <!-- Commons Compress -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
@@ -128,5 +122,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
