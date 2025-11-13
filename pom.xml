@@ -15,46 +15,41 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
         <app.runtime>4.10.1</app.runtime>
+        <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
     </properties>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
 
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-
-                <executions>
-                    <execution>
-                        <id>deploy-to-cloudhub2</id>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>mule-application</classifier>
-                            <deployment>
-                                <type>cloudHub2</type>
-                                <target>Sandbox</target>
-                                <organizationId>aef0d657-ae25-4c7c-b3f1-6ec206625075</organizationId>
-                                <connectedAppClientId>beadf31e3c9846bda9fa08c3fbe2b2a5</connectedAppClientId>
-                                <connectedAppClientSecret>82b728772c1D488bbbd092772B888ea2</connectedAppClientSecret>
-                                <applicationName>job_mail1</applicationName>
-                                <muleVersion>${app.runtime}</muleVersion>
-                                <region>us-east-1</region>
-                                <replicas>1</replicas>
-                                <workers>1</workers>
-                                <workerType>MICRO</workerType>
-                                <updateStrategy>rolling</updateStrategy>
-                            </deployment>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <classifier>mule-application</classifier>
+                    <deployment>
+                        <type>cloudHub2</type>
+                        <target>Sandbox</target>
+                        <organizationId>aef0d657-ae25-4c7c-b3f1-6ec206625075</organizationId>
+                        <connectedAppClientId>beadf31e3c9846bda9fa08c3fbe2b2a5</connectedAppClientId>
+                        <connectedAppClientSecret>82b728772c1D488bbbd092772B888ea2</connectedAppClientSecret>
+                        <applicationName>job_mail1</applicationName>
+                        <muleVersion>${app.runtime}</muleVersion>
+                        <region>us-east-1</region>
+                        <replicas>1</replicas>
+                        <workers>1</workers>
+                        <workerType>MICRO</workerType>
+                        <updateStrategy>rolling</updateStrategy>
+                    </deployment>
+                </configuration>
             </plugin>
-
         </plugins>
     </build>
 
