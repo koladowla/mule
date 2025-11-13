@@ -14,8 +14,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mule.maven.plugin.version>3.3.5</mule.maven.plugin.version>
-        <mule.runtime.version>4.4.0</mule.runtime.version>
+        <mule.maven.plugin.version>4.5.0</mule.maven.plugin.version>
+        <mule.runtime.version>4.9.4</mule.runtime.version>
         <cloudhub.env>Sandbox</cloudhub.env>
     </properties>
 
