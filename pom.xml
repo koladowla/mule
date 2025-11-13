@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+    <modelVersion>4.0.0</modelVersion>
     <groupId>com.example.mule</groupId>
     <artifactId>job_mail1</artifactId>
     <version>1.0.0</version>
@@ -13,12 +12,15 @@
     <properties>
         <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
         <mule.runtime.version>4.10.1</mule.runtime.version>
+
+        <!-- Connected App credentials (for CloudHub deployment) -->
+        <anypoint.connected.app.clientId>beadf31e3c9846bda9fa08c3fbe2b2a5</anypoint.connected.app.clientId>
+        <anypoint.connected.app.clientSecret>82b728772c1D488bbbd092772B888ea2</anypoint.connected.app.clientSecret>
+
         <anypoint.org.id>aef0d657-ae25-4c7c-b3f1-6ec206625075</anypoint.org.id>
         <anypoint.env.name>Sandbox</anypoint.env.name>
         <anypoint.region>us-east-1</anypoint.region>
         <app.name>job_mail1</app.name>
-        <anypoint.client.id>beadf31e3c9846bda9fa08c3fbe2b2a5</anypoint.client.id>
-        <anypoint.client.secret>82b728772c1D488bbbd092772B888ea2</anypoint.client.secret>
     </properties>
 
     <dependencies>
@@ -61,14 +63,16 @@
                         <target>cloudhub</target>
                         <applicationName>${app.name}</applicationName>
                         <region>${anypoint.region}</region>
+
+                        <connectedApp>
+                            <clientId>${anypoint.connected.app.clientId}</clientId>
+                            <clientSecret>${anypoint.connected.app.clientSecret}</clientSecret>
+                        </connectedApp>
+
                         <workers>
                             <amount>1</amount>
                             <type>Micro</type>
                         </workers>
-                        <cloudHubDeployment>
-                            <username>${anypoint.client.id}</username>
-                            <password>${anypoint.client.secret}</password>
-                        </cloudHubDeployment>
                     </deployment>
                 </configuration>
             </plugin>
@@ -76,7 +80,7 @@
     </build>
 
     <repositories>
-        <!-- Mulesoft release repo -->
+        <!-- MuleSoft public and releases -->
         <repository>
             <id>mulesoft-releases</id>
             <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
@@ -85,5 +89,24 @@
             <id>mulesoft-public</id>
             <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
         </repository>
+
+        <!-- EXCHANGE REPO (needed for connectors) -->
+        <repository>
+            <id>anypoint-exchange-v3</id>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+        </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-releases</id>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>anypoint-exchange-v3</id>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
