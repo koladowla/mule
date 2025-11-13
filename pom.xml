@@ -28,21 +28,33 @@
                 <extensions>true</extensions>
 
                 <configuration>
-                    <!-- Runtime version -->
+                    <!-- Mule Runtime version -->
                     <muleVersion>${mule.runtime.version}</muleVersion>
 
-                    <!-- Deploy to CloudHub -->
+                    <!-- Deployment Configuration -->
                     <deploymentType>cloudHub</deploymentType>
-
-                    <!-- Application name in CloudHub -->
                     <applicationName>${project.artifactId}</applicationName>
-
-                    <!-- CloudHub environment -->
                     <environment>${cloudhub.env}</environment>
 
-                    <!-- Credentials stored in settings.xml -->
+                    <!-- Matches the <server> ID in settings.xml -->
                     <server>Dowla</server>
+
+                    <!-- Optional but recommended -->
+                    <region>us-east-1</region>
+                    <workerType>MICRO</workerType>
+                    <workers>1</workers>
+                    <objectStoreV2>true</objectStoreV2>
                 </configuration>
+
+                <executions>
+                    <execution>
+                        <id>deploy-to-cloudhub</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -56,7 +68,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Example: HTTP Connector -->
+        <!-- HTTP Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
@@ -64,7 +76,7 @@
             <classifier>mule-plugin</classifier>
         </dependency>
 
-        <!-- Example: JSON Module -->
+        <!-- JSON Module -->
         <dependency>
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-json-module</artifactId>
