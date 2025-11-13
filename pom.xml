@@ -10,18 +10,13 @@
     <version>1.0.0</version>
     <packaging>mule-application</packaging>
     <name>job_mail</name>
-
     <description>MuleSoft Job Mail Application</description>
 
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
-        <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
+        <mule.maven.plugin.version>3.9.0</mule.maven.plugin.version>
         <java.version>17</java.version>
         <encoding>UTF-8</encoding>
-        <sonar.projectKey>Dowla_job_mail</sonar.projectKey>
-        <sonar.projectName>job_mail</sonar.projectName>
-        <sonar.language>java</sonar.language>
-        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
     </properties>
 
     <build>
@@ -33,7 +28,7 @@
                 <version>3.3.2</version>
             </plugin>
 
-            <!-- Mule Maven Plugin for CloudHub Deployment -->
+            <!-- Mule Maven Plugin for CloudHub 2.0 Deployment -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -41,54 +36,59 @@
                 <extensions>true</extensions>
                 <configuration>
                     <classifier>mule-application</classifier>
-                    <deploymentType>cloudhub</deploymentType>
-                    <cloudHubDeployment>
-                        <!-- ✅ Use Client ID/Secret Authentication -->
-                        <connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
-                        <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
-                        <environment>Sandbox</environment>
-                        <applicationName>job-mail-app</applicationName>
-                        <workers>1</workers>
-                        <workerType>Micro</workerType>
-                        <region>us-east-1</region>
-                    </cloudHubDeployment>
-                </configuration>
-            </plugin>
+                    <deploymentType>cloudhub2</deploymentType>
+                    <region>us-east-1</region>
+                    <target>Sandbox</target>
 
-            <!-- SonarQube Plugin -->
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.11.0.3922</version>
+                    <!-- Connected App authentication -->
+                    <connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
+                    <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
+                    <connectedAppGrantType>client_credentials</connectedAppGrantType>
+
+                    <!-- Application details -->
+                    <applicationName>job-mail-app</applicationName>
+                    <workers>1</workers>
+                    <workerType>MICRO</workerType>
+                    <objectStoreV2>true</objectStoreV2>
+
+                    <!-- Skip tests -->
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
 
     <dependencies>
+        <!-- Mule Connectors -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
             <version>1.11.0</version>
             <classifier>mule-plugin</classifier>
         </dependency>
+
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-email-connector</artifactId>
             <version>1.7.7</version>
             <classifier>mule-plugin</classifier>
         </dependency>
+
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-file-connector</artifactId>
             <version>1.5.5</version>
             <classifier>mule-plugin</classifier>
         </dependency>
+
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-sockets-connector</artifactId>
             <version>1.2.7</version>
             <classifier>mule-plugin</classifier>
         </dependency>
+
+        <!-- Utility Library -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
@@ -104,7 +104,7 @@
         </repository>
         <repository>
             <id>mulesoft-releases</id>
-            <name>MuleSoft Releases Repository</name>
+            <name>MuleSoft Releases</name>
             <url>https://repository.mulesoft.org/releases/</url>
         </repository>
     </repositories>
@@ -113,9 +113,7 @@
         <pluginRepository>
             <id>mulesoft-releases</id>
             <url>https://repository.mulesoft.org/releases/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
 </project>
