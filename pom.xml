@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,58 +14,46 @@
     <name>job_mail1</name>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <app.runtime>4.9.11</app.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
+        <mule.runtime.version>4.9.1</mule.runtime.version>
+
+        <!-- CloudHub 2.0 Configuration -->
+        <anypoint.org.id>aef0d657-ae25-4c7c-b3f1-6ec206625075</anypoint.org.id>
+        <anypoint.env.name>Sandbox</anypoint.env.name>
+        <anypoint.region>us-east-1</anypoint.region>
+        <app.name>job_mail1</app.name>
+
+        <!-- Connected App credentials (for CloudHub 2.0) -->
+        <anypoint.client.id>beadf31e3c9846bda9fa08c3fbe2b2a5</anypoint.client.id>
+        <anypoint.client.secret>PUT_YOUR_CLIENT_SECRET_HERE</anypoint.client.secret>
     </properties>
 
     <build>
         <plugins>
-            <!-- Clean plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.2.0</version>
-            </plugin>
-
-            <!-- Mule Maven Plugin for CloudHub 2.0 Deployment -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
-                <version>${mule.maven.plugin.version}</version>
+                <version>4.3.1</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <cloudhub2Deployment>
+                    <deploymentType>cloudhub2</deploymentType>
+
+                    <cloudHub2Deployment>
                         <uri>https://anypoint.mulesoft.com</uri>
-                        <provider>MC</provider>
+                        <organizationId>aef0d657-ae25-4c7c-b3f1-6ec206625075</organizationId>
                         <environment>Sandbox</environment>
-                        <muleVersion>${app.runtime}</muleVersion>
 
-                        <!-- 🔐 Credentials -->
-                        <username>TitanDowla</username>
-                        <password>Dowla@123</password>
+                        <connectedAppClientId>beadf31e3c9846bda9fa08c3fbe2b2a5</connectedAppClientId>
+                        <connectedAppClientSecret>82b728772c1D488bbbd092772B888ea2</connectedAppClientSecret>
 
-                        <!-- 🌐 Deployment Configuration -->
                         <applicationName>job_mail1</applicationName>
-                        <businessGroupId>aef0d657-ae25-4c7c-b3f1-6ec206625075</businessGroupId>
-                        <target>CloudHub-US-East-1</target>
+                        <muleVersion>4.10.1</muleVersion>
+                        <region>us-east-1</region>
                         <replicas>1</replicas>
-                        <vCores>0.2</vCores>
-
-                        <!-- ⚙️ Optional Deployment Settings -->
-                        <deploymentSettings>
-                            <updateStrategy>recreate</updateStrategy>
-                            <http>
-                                <inbound>
-                                    <publicUrl>https://job_mail1.us-east-1.cloudhub.io</publicUrl>
-                                    <forwardSslSession>true</forwardSslSession>
-                                    <lastMileSecurity>false</lastMileSecurity>
-                                </inbound>
-                            </http>
-                        </deploymentSettings>
-                    </cloudhub2Deployment>
+                        <workers>1</workers>
+                        <workerType>MICRO</workerType>
+                        <objectStoreV2>true</objectStoreV2>
+                    </cloudHub2Deployment>
                 </configuration>
             </plugin>
         </plugins>
@@ -98,26 +87,20 @@
             <id>anypoint-exchange-v3</id>
             <name>Anypoint Exchange</name>
             <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
-            <layout>default</layout>
         </repository>
 
         <repository>
             <id>mulesoft-releases</id>
-            <name>MuleSoft Releases Repository</name>
+            <name>MuleSoft Releases</name>
             <url>https://repository.mulesoft.org/releases/</url>
-            <layout>default</layout>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
-            <name>MuleSoft Releases Repository</name>
-            <layout>default</layout>
+            <name>MuleSoft Releases</name>
             <url>https://repository.mulesoft.org/releases/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 
