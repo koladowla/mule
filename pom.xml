@@ -16,29 +16,26 @@
     <properties>
         <mule.runtime>4.10.0</mule.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
-        <munit.version>3.6.1</munit.version>
-        <munit.maven.plugin.version>3.6.1</munit.maven.plugin.version>
         <java.version>17</java.version>
         <encoding>UTF-8</encoding>
+
+        <!-- SonarQube Settings -->
         <sonar.projectKey>Dowla_job_mail</sonar.projectKey>
         <sonar.projectName>job_mail</sonar.projectName>
         <sonar.language>java</sonar.language>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        
-        <!-- Define placeholders for Jenkins injection -->
-        <anypoint.username/>
-        <anypoint.password/>
-        <cloudhub.environment/>
-        <app.name>job-mail-app</app.name>
     </properties>
 
     <build>
         <plugins>
+            <!-- Clean build -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
+
+            <!-- Mule build & deployment -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -48,27 +45,88 @@
                     <classifier>mule-application</classifier>
                     <deploymentType>cloudhub</deploymentType>
                     <cloudHubDeployment>
-                        <username>${anypoint.username}</username>
-                        <password>${anypoint.password}</password>
-                        <environment>${cloudhub.environment}</environment>
-                        <applicationName>${app.name}</applicationName>
+                        <!-- Use credentials from settings.xml -->
+                        <server>anypoint</server>
+                        <environment>Sandbox</environment>
+                        <applicationName>job-mail-app</applicationName>
                         <workers>1</workers>
-                        <workerType>MICRO</workerType>
+                        <workerType>Micro</workerType>
                         <region>us-east-1</region>
                     </cloudHubDeployment>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
-            <!-- MUnit and Sonar plugins omitted for brevity -->
+
+            <!-- SonarQube Scanner -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.11.0.3922</version>
+            </plugin>
         </plugins>
     </build>
-    <!-- Dependencies, repositories, and plugin repositories omitted for brevity -->
+
+    <dependencies>
+        <!-- HTTP Connector -->
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-http-connector</artifactId>
+            <version>1.11.0</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+
+        <!-- Email Connector -->
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-email-connector</artifactId>
+            <version>1.7.7</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+
+        <!-- File Connector -->
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-file-connector</artifactId>
+            <version>1.5.5</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+
+        <!-- Sockets Connector -->
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-sockets-connector</artifactId>
+            <version>1.2.7</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+
+        <!-- Commons Compress -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.27.1</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>anypoint-exchange-v3</id>
+            <name>Anypoint Exchange</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+        </repository>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>https://repository.mulesoft.org/releases/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-releases</id>
+            <url>https://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
