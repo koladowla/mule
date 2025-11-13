@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -17,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <app.runtime>4.9.11</app.runtime>
+        <app.runtime>4.10.1</app.runtime>
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
     </properties>
 
@@ -34,13 +33,6 @@
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.mule.tools.maven</groupId>
-                <artifactId>mule-maven-plugin</artifactId>
-                <version>${mule.maven.plugin.version}</version>
-                <extensions>true</extensions>
                 <configuration>
                     <classifier>mule-application</classifier>
                     <deploymentType>cloudhub</deploymentType>
@@ -48,7 +40,8 @@
                         <username>TitanDowla</username>
                         <password>Dowla@123</password>
                         <environment>Sandbox</environment>
-                        <applicationName>job_mail</applicationName>
+                        <applicationName>job_mail1</applicationName>
+                        <muleVersion>${app.runtime}</muleVersion>
                         <workers>1</workers>
                         <workerType>Micro</workerType>
                         <region>us-east-1</region>
