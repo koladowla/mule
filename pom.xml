@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.example.mule</groupId>
     <artifactId>job_mail1</artifactId>
     <version>1.0.0</version>
     <packaging>mule-application</packaging>
 
-    <properties>
-        <!-- Mule runtime & plugin versions -->
-        <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
-        <mule.runtime.version>4.9.11</mule.runtime.version>
+    <name>job_mail1</name>
+    <description>Mule project for sending emails</description>
 
-        <!-- CloudHub 2.0 config -->
+    <properties>
+        <!-- Mule & Plugin Versions -->
+        <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
+        <mule.runtime.version>4.10.1</mule.runtime.version>
+
+        <!-- CloudHub 2.0 Configuration -->
         <anypoint.org.id>aef0d657-ae25-4c7c-b3f1-6ec206625075</anypoint.org.id>
         <anypoint.env.name>Sandbox</anypoint.env.name>
         <anypoint.region>us-east-1</anypoint.region>
         <app.name>job_mail1</app.name>
 
-        <!-- Connected App credentials (hardcoded) -->
+        <!-- 🔐 Connected App credentials (for local testing) -->
         <anypoint.client.id>beadf31e3c9846bda9fa08c3fbe2b2a5</anypoint.client.id>
         <anypoint.client.secret>82b728772c1D488bbbd092772B888ea2</anypoint.client.secret>
     </properties>
@@ -38,15 +40,16 @@
         </repository>
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>mulesoft-public</id>
-            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencies>
-        <!-- HTTP connector -->
+        <!-- Mule EE Runtime -->
+        <dependency>
+            <groupId>org.mule.runtime</groupId>
+            <artifactId>mule-ee</artifactId>
+            <version>${mule.runtime.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- HTTP Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
@@ -55,20 +58,12 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Email connector -->
+        <!-- Email Connector -->
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-email-connector</artifactId>
             <version>1.7.7</version>
             <classifier>mule-plugin</classifier>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Mule EE runtime -->
-        <dependency>
-            <groupId>org.mule.runtime</groupId>
-            <artifactId>mule-ee</artifactId>
-            <version>4.9.11</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -81,28 +76,27 @@
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <muleVersion>${mule.runtime.version}</muleVersion>
-
-                    <!-- Automatically download Mule runtime and connectors -->
-                    <download>
-                        <muleRuntime>true</muleRuntime>
-                        <mulePlugin>true</mulePlugin>
-                    </download>
-
-                    <!-- CloudHub 2.0 deployment -->
+                    <deploymentTargets>
+                        <target>default</target>
+                    </deploymentTargets>
                     <cloudHubDeployment>
                         <applicationName>${app.name}</applicationName>
-                        <workers amount="1" type="Micro"/>
                         <region>${anypoint.region}</region>
-                        <environment>${anypoint.env.name}</environment>
+                        <workers>
+                            <amount>1</amount>
+                            <type>Micro</type>
+                        </workers>
+                        <vCore>0.1</vCore>
+                        <workerType>Micro</workerType>
+                        <monitoringEnabled>true</monitoringEnabled>
                     </cloudHubDeployment>
-
-                    <!-- Connected App credentials -->
                     <connectedAppClientId>${anypoint.client.id}</connectedAppClientId>
                     <connectedAppClientSecret>${anypoint.client.secret}</connectedAppClientSecret>
-                    <organizationId>${anypoint.org.id}</organizationId>
+                    <environment>${anypoint.env.name}</environment>
+                    <organization>${anypoint.org.id}</organization>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>
