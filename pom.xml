@@ -24,8 +24,8 @@
         <targetName>Cloudhub-US-East-1</targetName>
         <appName>job_mail1</appName>
         <publicURL>https://jobmail1.anypoint.com</publicURL>
-        <user>YOUR_ANYPOINT_USERNAME</user>
-        <pass>YOUR_ANYPOINT_PASSWORD</pass>
+        <user>TitanDowla</user>
+        <pass>Dowla@123</pass>
     </properties>
 
     <build>
