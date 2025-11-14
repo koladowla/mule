@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.mycompany</groupId>
     <artifactId>job-mail1</artifactId>
     <version>1.0.0-SNAPSHOT</version>
@@ -15,38 +13,16 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <app.runtime>4.10.1</app.runtime>
         <mule.maven.plugin.version>4.6.0</mule.maven.plugin.version>
-
-        <!-- CloudHub deployment properties -->
         <env>Sandbox</env>
-        <targetName>Cloudhub-US-East-</targetName>
-        <appName>job-mail1</appName> <!-- use dash instead of underscore -->
+        <targetName>Cloudhub-US-East-1</targetName>
+        <appName>job-mail1</appName>
         <publicURL>https://jobmail1.anypoint.com</publicURL>
-        <user>TitanDowla</user>
-        <pass>Dowla@123</pass>
     </properties>
 
     <build>
         <plugins>
-            <!-- Clean plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.2.0</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.mule.tools.maven</groupId>
-                <artifactId>mule-maven-plugin</artifactId>
-                <version>4.6.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <!-- your cloudhub deployment config -->
-                </configuration>
-            </plugin>
-
             <!-- Mule Maven Plugin -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
@@ -55,16 +31,14 @@
                 <extensions>true</extensions>
                 <configuration>
                     <cloudhub2Deployment>
-                        <uri>https://anypoint.mulesoft.com</uri>
-                        <provider>MC</provider>
                         <environment>${env}</environment>
                         <target>${targetName}</target>
                         <muleVersion>${app.runtime}</muleVersion>
                         <applicationName>${appName}</applicationName>
                         <replicas>1</replicas>
                         <vCores>1</vCores>
-                        <username>${user}</username>
-                        <password>${pass}</password>
+                        <username>${env.ANYPNT_USERNAME}</username>
+                        <password>${env.ANYPNT_PASSWORD}</password>
                         <deploymentSettings>
                             <http>
                                 <inbound>
@@ -89,12 +63,6 @@
         </dependency>
         <dependency>
             <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-sockets-connector</artifactId>
-            <version>1.2.7</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
             <artifactId>mule-email-connector</artifactId>
             <version>1.7.7</version>
             <classifier>mule-plugin</classifier>
@@ -114,9 +82,8 @@
         <pluginRepository>
             <id>mulesoft-releases</id>
             <name>MuleSoft Releases Repository</name>
-            <layout>default</layout>
             <url>https://repository.mulesoft.org/releases/</url>
-            <snapshots><enabled>false</enabled></snapshots>
+            <layout>default</layout>
         </pluginRepository>
     </pluginRepositories>
 
