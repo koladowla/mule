@@ -7,11 +7,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mycompany</groupId>
-    <artifactId>job_mail1</artifactId>
+    <artifactId>job-mail1</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>mule-application</packaging>
 
-    <name>job_mail1</name>
+    <name>job-mail1</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,11 +22,10 @@
         <!-- CloudHub deployment properties -->
         <env>Sandbox</env>
         <targetName>Cloudhub-US-East-1</targetName>
-        <appName>job_mail1</appName>
+        <appName>job-mail1</appName> <!-- use dash instead of underscore -->
         <publicURL>https://jobmail1.anypoint.com</publicURL>
-        <!-- Credentials will be passed from Jenkins -->
-        <user>${anypoint.username}</user>
-        <pass>${anypoint.password}</pass>
+        <user>TitanDowla</user>
+        <pass>Dowla@123</pass>
     </properties>
 
     <build>
@@ -94,14 +93,6 @@
 
     <repositories>
         <repository>
-            <id>anypoint-exchange-v3</id>
-            <name>Anypoint Exchange</name>
-            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/aef0d657-ae25-4c7c-b3f1-6ec206625075/maven</url>
-            <layout>default</layout>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-        <repository>
             <id>mulesoft-releases</id>
             <name>MuleSoft Releases Repository</name>
             <url>https://repository.mulesoft.org/releases/</url>
@@ -113,8 +104,8 @@
         <pluginRepository>
             <id>mulesoft-releases</id>
             <name>MuleSoft Releases Repository</name>
-            <url>https://repository.mulesoft.org/releases/</url>
             <layout>default</layout>
+            <url>https://repository.mulesoft.org/releases/</url>
             <snapshots><enabled>false</enabled></snapshots>
         </pluginRepository>
     </pluginRepositories>
