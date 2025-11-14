@@ -37,6 +37,16 @@
                 <version>3.2.0</version>
             </plugin>
 
+            <plugin>
+                <groupId>org.mule.tools.maven</groupId>
+                <artifactId>mule-maven-plugin</artifactId>
+                <version>4.6.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- your cloudhub deployment config -->
+                </configuration>
+            </plugin>
+
             <!-- Mule Maven Plugin -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
