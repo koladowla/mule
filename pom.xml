@@ -24,8 +24,9 @@
         <targetName>Cloudhub-US-East-1</targetName>
         <appName>job_mail1</appName>
         <publicURL>https://jobmail1.anypoint.com</publicURL>
-        <user>TitanDowla</user>
-        <pass>Dowla@123</pass>
+        <!-- Credentials will be passed from Jenkins -->
+        <user>${anypoint.username}</user>
+        <pass>${anypoint.password}</pass>
     </properties>
 
     <build>
@@ -99,12 +100,7 @@
             <layout>default</layout>
             <releases><enabled>true</enabled></releases>
             <snapshots><enabled>true</enabled></snapshots>
-            <authentication>
-                <username>${user}</username>
-                <password>${pass}</password>
-            </authentication>
         </repository>
-
         <repository>
             <id>mulesoft-releases</id>
             <name>MuleSoft Releases Repository</name>
@@ -117,8 +113,8 @@
         <pluginRepository>
             <id>mulesoft-releases</id>
             <name>MuleSoft Releases Repository</name>
-            <layout>default</layout>
             <url>https://repository.mulesoft.org/releases/</url>
+            <layout>default</layout>
             <snapshots><enabled>false</enabled></snapshots>
         </pluginRepository>
     </pluginRepositories>
