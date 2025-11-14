@@ -22,41 +22,35 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
             </plugin>
 
+            <!-- ✅ Updated mule-maven-plugin inserted here -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.mule.tools.maven</groupId>
-                <artifactId>mule-maven-plugin</artifactId>
-                <version>4.5.3</version>
-                <extensions>true</extensions>
                 <configuration>
                     <cloudHubDeployment>
                         <uri>https://anypoint.mulesoft.com</uri>
-                        <muleVersion>${app.runtime}</muleVersion>
-                        <username>${username}</username>
-                        <password>${password}</password>
-                        <applicationName>${cloudhub.application.name}</applicationName>
-                        <environment>${environment}</environment>
-                        <region>${region}</region>
+                        <muleVersion>${mule.version}</muleVersion>
+                        <username>${anypoint.username}</username>
+                        <password>${anypoint.password}</password>
+                        <environment>${env}</environment>
+                        <applicationName>${appname}</applicationName>
+                        <businessGroup>${business}</businessGroup>
+                        <workerType>${vCore}</workerType>
                         <workers>${workers}</workers>
-                        <workerType>${workerType}</workerType>
-                        <properties>
-                            <key>value</key>
-                        </properties>
+                        <objectStoreV2>true</objectStoreV2>
                     </cloudHubDeployment>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
