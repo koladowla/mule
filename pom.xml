@@ -21,7 +21,7 @@
 
         <!-- CloudHub deployment properties -->
         <env>Sandbox</env>
-        <targetName>Cloudhub-US-East-1</targetName>
+        <targetName>Cloudhub-US-East-2</targetName>
         <appName>job-mail1</appName> <!-- use dash instead of underscore -->
         <publicURL>https://jobmail1.anypoint.com</publicURL>
         <user>TitanDowla</user>
