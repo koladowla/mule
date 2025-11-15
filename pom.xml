@@ -15,8 +15,8 @@
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
         <!-- Defaults; override via command line -->
         <environment>Sandbox</environment>
-        <target>Cloudhub-US-East-1</target>  <!-- Adjust region as needed -->
-        <businessGroupId>na-7463</businessGroupId>
+        <target>Cloudhub-US-East-1</target>  <!-- Region; adjust as needed -->
+        <businessGroupId>na-7463</businessGroupId>  <!-- Your org/business group ID -->
         <muleVersion>4.10.1</muleVersion>
         <appName>job_mail1</appName>
         <replicas>1</replicas>
@@ -24,6 +24,14 @@
         <releaseChannel>LTS</releaseChannel>
         <javaVersion>8</javaVersion>
     </properties>
+    <distributionManagement>
+        <repository>
+            <id>Repository</id>
+            <name>Corporate Repository</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/aef0d657-ae25-4c7c-b3f1-6ec206625075/maven</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
     <build>
         <plugins>
             <plugin>
@@ -36,48 +44,39 @@
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <id>deploy-to-cloudhub</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                        <configuration>
-                            <cloudhub2Deployment>
-                                <uri>https://anypoint.mulesoft.com</uri>
-                                <provider>MC</provider>
-                                <environment>${environment}</environment>
-                                <target>${target}</target>
-                                <businessGroupId>${businessGroupId}</businessGroupId>
-                                <muleVersion>${muleVersion}</muleVersion>
-                                <releaseChannel>${releaseChannel}</releaseChannel>
-                                <javaVersion>${javaVersion}</javaVersion>
-                                <!-- Preferred: Connected App (OAuth) - Direct under cloudhub2Deployment -->
-                                <connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
-                                <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
-                                <connectedAppGrantType>client_credentials</connectedAppGrantType>
-                                <!-- Alternative: Basic Auth (uncomment and comment Connected App) -->
-                                <!-- <username>${anypoint.username}</username> -->
-                                <!-- <password>${anypoint.password}</password> -->
-                                <!-- Alternative: Server-based (from settings.xml) -->
-                                <!-- <server>anypoint-deployment</server> -->
-                                <applicationName>${appName}</applicationName>
-                                <replicas>${replicas}</replicas>
-                                <vCores>${vCores}</vCores>
-                                <deploymentSettings>
-                                    <http>
-                                        <inbound>
-                                            <publicUrl>${publicURL}</publicUrl>  <!-- Optional; auto-generated if omitted -->
-                                            <forwardSslSession>true</forwardSslSession>
-                                            <lastMileSecurity>true</lastMileSecurity>
-                                        </inbound>
-                                    </http>
-                                </deploymentSettings>
-                            </cloudhub2Deployment>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <cloudhub2Deployment>
+                        <uri>https://anypoint.mulesoft.com</uri>
+                        <provider>MC</provider>
+                        <environment>${environment}</environment>
+                        <target>${target}</target>
+                        <businessGroupId>${businessGroupId}</businessGroupId>
+                        <muleVersion>${muleVersion}</muleVersion>
+                        <releaseChannel>${releaseChannel}</releaseChannel>
+                        <javaVersion>${javaVersion}</javaVersion>
+                        <!-- Preferred: Connected App (OAuth) -->
+                        <connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
+                        <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
+                        <connectedAppGrantType>client_credentials</connectedAppGrantType>
+                        <!-- Alternative: Basic Auth (uncomment and comment Connected App above) -->
+                        <!-- <username>${anypoint.username}</username> -->
+                        <!-- <password>${anypoint.password}</password> -->
+                        <!-- Alternative: Server from settings.xml -->
+                        <!-- <server>anypoint-deployment</server> -->
+                        <applicationName>${appName}</applicationName>
+                        <replicas>${replicas}</replicas>
+                        <vCores>${vCores}</vCores>
+                        <deploymentSettings>
+                            <http>
+                                <inbound>
+                                    <publicUrl>${publicURL}</publicUrl>  <!-- Optional; auto-generated if omitted -->
+                                    <forwardSslSession>true</forwardSslSession>
+                                    <lastMileSecurity>true</lastMileSecurity>
+                                </inbound>
+                            </http>
+                        </deploymentSettings>
+                    </cloudhub2Deployment>
+                </configuration>
             </plugin>
         </plugins>
     </build>
