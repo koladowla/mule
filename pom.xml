@@ -1,97 +1,116 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+#%RAML 1.0
+title: Retail Shopping Cart Process API
+version: v2.0
+baseUri: http://localhost:8081/api
+  
+uses: 
+  shoppingCart: /exchange_modules/org.mule.templates/retail-shopping-cart-types/1.0.2/retail_shopping_cart_types.raml  
 
-    <modelVersion>4.0.0</modelVersion>
+types:
+  ShoppingCartCollectionResponse:
+    type: shoppingCart.ShoppingCart[]
 
-    <groupId>com.mycompany</groupId>
-    <artifactId>job_mail1</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>mule-application</packaging>
+  ShoppingCartResponse:
+    type: shoppingCart.ShoppingCart  
 
-    <name>job_mail1</name>
+  MessageResponse: 
+    properties:
+      identifier?: string
+      message: string
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
 
-        <!-- REQUIRED -->
-        <anypoint.username>${env.ANYPOINT_USERNAME}</anypoint.username>
-        <anypoint.password>${env.ANYPOINT_PASSWORD}</anypoint.password>
+/shoppingCarts:
+  post:
+    displayName: Create shopping cart
+    description: Create shopping Cart
+    body:
+      application/json:
+          type: ShoppingCartCollectionResponse
+          example: !include examples/shopping-carts_post_request.yaml              
+    responses:
+      201:
+        body: 
+          application/json:
+            type: MessageResponse 
+            example: 
+              {
+                "message": "Shopping cart was created"
+              }
 
-        <!-- These MUST be replaced with actual IDs -->
-        <org.id>aef0d657-ae25-4c7c-b3f1-6ec206625075</org.id>
-        <env.id>f5e45dcf-5571-4fea-bbad-d089464e9225</env.id>
-        <target.name></target.name> <!-- Fill after sending me your private space name -->
+              
+  /{shoppingCartId}:          
+    get:
+      displayName: Get shopping cart
+      description: Return shopping cart 
+      responses:
+        200:
+          body: 
+            application/json: 
+              type: ShoppingCartResponse
+              example: !include examples/shopping-cart_get_response.yaml         
+        404:
+          body: 
+            application/json:
+              type: MessageResponse 
+              example: 
+                {
+                  "message": "Shopping cart not found"
+                }
+    put:
+      displayName: Update shopping cart
+      description: Update shopping cart  
+      body:
+        application/json:
+          type: ShoppingCartResponse
+          example:  !include examples/shopping-cart_put_request.yaml  
         
-        <!-- Deployment -->
-        <app.name>job_mail1</app.name>
-        <mule.version>4.10.1</mule.version>
-        <vcores>0.1</vcores>
-        <workers>1</workers>
-    </properties>
-
-    <build>
-        <plugins>
-            <!-- Mule Build Plugin -->
-            <plugin>
-                <groupId>org.mule.tools.maven</groupId>
-                <artifactId>mule-maven-plugin</artifactId>
-                <version>${mule.maven.plugin.version}</version>
-                <extensions>true</extensions>
-
-                <configuration>
-                    <cloudhub2Deployment>
-                        <uri>https://anypoint.mulesoft.com</uri>
-                        <organizationId>${org.id}</organizationId>
-                        <environmentId>${env.id}</environmentId>
-                        <target>${target.name}</target>
-
-                        <!-- Authentication -->
-                        <username>${anypoint.username}</username>
-                        <password>${anypoint.password}</password>
-
-                        <applicationName>${app.name}</applicationName>
-                        <muleVersion>${mule.version}</muleVersion>
-
-                        <replicas>${workers}</replicas>
-                        <vCores>${vcores}</vCores>
-
-                        <deploymentSettings>
-                            <http>
-                                <inbound>
-                                    <forwardSslSession>true</forwardSslSession>
-                                    <lastMileSecurity>false</lastMileSecurity>
-                                </inbound>
-                            </http>
-                        </deploymentSettings>
-                    </cloudhub2Deployment>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <repositories>
-        <repository>
-            <id>anypoint-exchange-v3</id>
-            <name>Anypoint Exchange</name>
-            <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
-        </repository>
-
-        <repository>
-            <id>mulesoft-releases</id>
-            <name>MuleSoft Releases</name>
-            <url>https://repository.mulesoft.org/releases/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>mulesoft-releases</id>
-            <name>MuleSoft Releases</name>
-            <url>https://repository.mulesoft.org/releases/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
-</project>
+      responses:
+        200:
+          body: 
+            application/json: 
+              type: MessageResponse
+              example: 
+                {
+                  "message": "Shopping cart was updated"
+                }
+        404:
+          body: 
+            application/json:
+              type: MessageResponse 
+              example: 
+                {
+                  "message": "Shopping cart not found"
+                }
+            
+    delete:
+      displayName: Delete shopping cart
+      description: Delete shopping cart
+      responses:
+        200:
+          body:
+            application/json: 
+              example: 
+                {
+                  "message": "Shopping Cart was deleted"
+                }
+        404:
+          body: 
+            application/json:
+              type: MessageResponse 
+              example: 
+                {
+                  "message": "Shopping cart not found"
+                }
+/customers:
+  /{customerId}: 
+    /shoppingCarts: 
+      get: 
+        displayName: Get shopping carts for customer
+        description: Return Shopping Carts of customer
+        responses:
+            200:
+              body:
+                application/json:
+                  type: ShoppingCartCollectionResponse
+                  example: !include examples/shopping-cart_customer_get_response.yaml
+ 
