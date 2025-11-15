@@ -15,7 +15,7 @@
         <mule.maven.plugin.version>4.5.3</mule.maven.plugin.version>
         <!-- Defaults; override via command line -->
         <environment>Sandbox</environment>
-        <target>Cloudhub-US-East-1</target>  <!-- Region; adjust as needed -->
+        <targetName>Cloudhub-US-East-1</targetName>  <!-- Region; adjust as needed -->
         <businessGroupId>na-7463</businessGroupId>  <!-- Your org/business group ID -->
         <muleVersion>4.10.1</muleVersion>
         <appName>job_mail1</appName>
@@ -49,7 +49,7 @@
                         <uri>https://anypoint.mulesoft.com</uri>
                         <provider>MC</provider>
                         <environment>${environment}</environment>
-                        <target>${target}</target>
+                        <target>${targetName}</target>
                         <businessGroupId>${businessGroupId}</businessGroupId>
                         <muleVersion>${muleVersion}</muleVersion>
                         <releaseChannel>${releaseChannel}</releaseChannel>
