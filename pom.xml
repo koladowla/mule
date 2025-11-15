@@ -36,41 +36,48 @@
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
-                <configuration>
-                    <cloudhub2Deployment>
-                        <uri>https://anypoint.mulesoft.com</uri>
-                        <provider>MC</provider>
-                        <environment>${environment}</environment>
-                        <target>${target}</target>
-                        <businessGroupId>${businessGroupId}</businessGroupId>
-                        <muleVersion>${muleVersion}</muleVersion>
-                        <releaseChannel>${releaseChannel}</releaseChannel>
-                        <javaVersion>${javaVersion}</javaVersion>
-                        <authentication>
-                            <!-- Preferred: Connected App (OAuth) -->
-                            <connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
-                            <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
-                            <connectedAppGrantType>client_credentials</connectedAppGrantType>
-                            <!-- Alternative: Basic (comment out Connected App if using) -->
-                            <!--
-                            <username>${anypoint.username}</username>
-                            <password>${anypoint.password}</password>
-                            -->
-                        </authentication>
-                        <applicationName>${appName}</applicationName>
-                        <replicas>${replicas}</replicas>
-                        <vCores>${vCores}</vCores>
-                        <deploymentSettings>
-                            <http>
-                                <inbound>
-                                    <publicUrl>${publicURL}</publicUrl>  <!-- Optional; auto-generated if omitted -->
-                                    <forwardSslSession>true</forwardSslSession>
-                                    <lastMileSecurity>true</lastMileSecurity>
-                                </inbound>
-                            </http>
-                        </deploymentSettings>
-                    </cloudhub2Deployment>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>deploy-to-cloudhub</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                        <configuration>
+                            <cloudhub2Deployment>
+                                <uri>https://anypoint.mulesoft.com</uri>
+                                <provider>MC</provider>
+                                <environment>${environment}</environment>
+                                <target>${target}</target>
+                                <businessGroupId>${businessGroupId}</businessGroupId>
+                                <muleVersion>${muleVersion}</muleVersion>
+                                <releaseChannel>${releaseChannel}</releaseChannel>
+                                <javaVersion>${javaVersion}</javaVersion>
+                                <!-- Preferred: Connected App (OAuth) - Direct under cloudhub2Deployment -->
+                                <connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
+                                <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
+                                <connectedAppGrantType>client_credentials</connectedAppGrantType>
+                                <!-- Alternative: Basic Auth (uncomment and comment Connected App) -->
+                                <!-- <username>${anypoint.username}</username> -->
+                                <!-- <password>${anypoint.password}</password> -->
+                                <!-- Alternative: Server-based (from settings.xml) -->
+                                <!-- <server>anypoint-deployment</server> -->
+                                <applicationName>${appName}</applicationName>
+                                <replicas>${replicas}</replicas>
+                                <vCores>${vCores}</vCores>
+                                <deploymentSettings>
+                                    <http>
+                                        <inbound>
+                                            <publicUrl>${publicURL}</publicUrl>  <!-- Optional; auto-generated if omitted -->
+                                            <forwardSslSession>true</forwardSslSession>
+                                            <lastMileSecurity>true</lastMileSecurity>
+                                        </inbound>
+                                    </http>
+                                </deploymentSettings>
+                            </cloudhub2Deployment>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
