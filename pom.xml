@@ -23,6 +23,9 @@
         <vCores>0.1</vCores>  <!-- Micro equivalent in CH2.0 -->
         <releaseChannel>LTS</releaseChannel>
         <javaVersion>8</javaVersion>
+        <!-- Basic Auth Props (for overrides) -->
+        <anypoint.username>TitanDowla</anypoint.username>
+        <anypoint.password>Dowla@123</anypoint.password>
     </properties>
     <distributionManagement>
         <repository>
@@ -54,15 +57,13 @@
                         <muleVersion>${muleVersion}</muleVersion>
                         <releaseChannel>${releaseChannel}</releaseChannel>
                         <javaVersion>${javaVersion}</javaVersion>
-                        <!-- Preferred: Connected App (OAuth) -->
-                        <connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
-                        <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
-                        <connectedAppGrantType>client_credentials</connectedAppGrantType>
-                        <!-- Alternative: Basic Auth (uncomment and comment Connected App above) -->
-                        <!-- <username>${anypoint.username}</username> -->
-                        <!-- <password>${anypoint.password}</password> -->
-                        <!-- Alternative: Server from settings.xml -->
-                        <!-- <server>anypoint-deployment</server> -->
+                        <!-- Basic Auth (Active for this workaround) -->
+                        <username>${anypoint.username}</username>
+                        <password>${anypoint.password}</password>
+                        <!-- Connected App (Commented; switch back after fixing grant types) -->
+                        <!-- <connectedAppClientId>${anypoint.clientId}</connectedAppClientId> -->
+                        <!-- <connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret> -->
+                        <!-- <connectedAppGrantType>client_credentials</connectedAppGrantType> -->
                         <applicationName>${appName}</applicationName>
                         <replicas>${replicas}</replicas>
                         <vCores>${vCores}</vCores>
